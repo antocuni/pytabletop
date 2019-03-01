@@ -1,0 +1,40 @@
+#:kivy 1.0
+#:import kivy kivy
+#:import win kivy.core.window
+
+# <Widget>:
+#     canvas.after:
+#         Color:
+#             rgb: 1, 1, 0
+        
+#         Line:
+#             rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#             dash_offset: 5
+#             dash_length: 3
+
+<FogOfWar>:
+    size: self.texture.size if self.texture else (100, 100)
+    size_hint: None, None
+
+
+FloatLayout:
+
+    Scatter:
+        pos: 100, 100
+        FogOfWar:
+            id: map
+            source: "grid.png"
+
+    Button:
+        pos: 0, 1200
+        size: 100, 100
+        size_hint: None, None
+        on_release: app.do_reveal()
+        text: "reveal"
+
+    Button:
+        pos: 150, 1200
+        size: 100, 100
+        size_hint: None, None
+        on_release: app.do_clear()
+        text: "clear"
