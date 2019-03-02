@@ -24,21 +24,20 @@ class FogOfWar(RelativeLayout):
     current_rect = None
     current_origin = None
     def on_map_touch_down(self, touch):
-        print 'down'
         self.current_origin = touch.pos
         self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
         self.add_widget(self.current_rect)
         touch.grab(self.ids.map)
 
     def on_map_touch_move(self, touch):
-        print 'move'
         pos, size = bounding_rect(self.current_origin, touch.pos)
         self.current_rect.pos = pos
         self.current_rect.size = size
 
     def on_map_touch_up(self, touch):
-        print 'up'
-        if self.current_rect and self.current_rect.width < 5 and self.current_rect.height < 5:
+        if (self.current_rect and
+            self.current_rect.width < 5 and
+            self.current_rect.height < 5):
             # too small, remove it!
             self.remove_widget(self.current_rect)
             self.current_rect = None
@@ -67,7 +66,8 @@ class RevealRectangle(DragBehavior, Widget):
         if self.collide_point(*touch.pos):
             if touch.is_double_tap:
                 self.parent.remove_widget(self)
-        super(RevealRectangle, self).on_touch_down(touch)
+            super(RevealRectangle, self).on_touch_down(touch)
+            return True
 
 
 class PyTableTopApp(App):
