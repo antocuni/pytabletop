@@ -82,8 +82,8 @@ BoxLayout:
     Button:
         size_hint_y: None
         height: 100
-        on_release: app.do_reveal()
-        text: "reveal"
+        on_release: app.do_sync()
+        text: "sync"
 
     BoxLayout:
         orientation: 'horizontal'
@@ -103,5 +103,6 @@ BoxLayout:
             width: 10
                 
         FogOfWar:
+            id: fog2
             source: "grid.png"
             autoscale: False
