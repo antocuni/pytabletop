@@ -69,35 +69,19 @@
 #             texture: self.texture
 
 
-FloatLayout:
+BoxLayout:
+    orientation: 'vertical'
 
-    # Scatter:
-    #     id: scat
-    #     pos: 100, 100
-    #     FogOfWar:
-    #         id: map
-    #         source: "grid.png"
-
+    Button:
+        size_hint_y: None
+        height: 100
+        on_release: app.do_reveal()
+        text: "reveal"
 
     FogOfWar:
         id: fog
-        pos: 1200, 100
         source: "grid.png"
         RevealRectangle:
             pos: 50, 750
             size: 200, 200
             size_hint: None, None
-
-    Button:
-        pos: 0, 1200
-        size: 100, 100
-        size_hint: None, None
-        on_release: app.do_reveal()
-        text: "reveal"
-
-    Button:
-        pos: 150, 1200
-        size: 100, 100
-        size_hint: None, None
-        on_release: app.do_clear()
-        text: "clear"
