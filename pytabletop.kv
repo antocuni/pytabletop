@@ -13,17 +13,75 @@
 #             dash_length: 3
 
 <FogOfWar>:
-    size: self.texture.size if self.texture else (100, 100)
+    Image:
+        id: map
+        source: root.source
+        pos: 0, 0
+        size: self.texture.size if self.texture else (100, 100)
+        size_hint: None, None
+
+        canvas.after:
+            Color:
+                rgba: 0, 0, 0, 0.7
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+<RevealRectangle>:
+    drag_rectangle: self.x, self.y, self.width, self.height
+    drag_timeout: 10000000
+    drag_distance: 0
     size_hint: None, None
+
+    canvas.after:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            texture: self.texture
+            size: self.size
+            pos: self.pos
+
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            dash_offset: 5
+            dash_length: 3
+
+
+# <RevealEllipse>:
+#     drag_rectangle: self.x, self.y, self.width, self.height
+#     drag_timeout: 10000000
+#     drag_distance: 0
+#     size_hint: None, None
+
+#     canvas.after:
+#         Color:
+#             rgba: 1, 1, 1, 1
+#         Ellipse:
+#             pos: self.pos
+#             size: self.size
+#             texture: self.texture
 
 
 FloatLayout:
 
-    Scatter:
-        pos: 100, 100
-        FogOfWar:
-            id: map
-            source: "grid.png"
+    # Scatter:
+    #     id: scat
+    #     pos: 100, 100
+    #     FogOfWar:
+    #         id: map
+    #         source: "grid.png"
+
+
+    FogOfWar:
+        id: fog
+        pos: 1200, 100
+        source: "grid.png"
+        RevealRectangle:
+            pos: 50, 750
+            size: 200, 200
+            size_hint: None, None
+
 
     Button:
         pos: 0, 1200
