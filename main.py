@@ -5,7 +5,7 @@ kivy.require('1.0.6')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import ObjectProperty, NumericProperty, BooleanProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.behaviors import DragBehavior
 
@@ -21,6 +21,19 @@ def bounding_rect(pos1, pos2):
 class FogOfWar(RelativeLayout):
     source = ObjectProperty()
     scale = NumericProperty(1.0)
+    autoscale = BooleanProperty(False)
+
+    def on_autoscale(self, instance, value):
+        self._autoscale()
+
+    def on_size(self, instance, value):
+        self._autoscale()
+
+    def _autoscale(self):
+        img_w, img_h = self.ids.map.texture.size
+        kx = self.width / float(img_w)
+        ky = self.height / float(img_h)
+        self.scale = min(kx, ky)
 
     def to_local(self, x, y, **k):
         xx = (x - self.x) / self.scale
