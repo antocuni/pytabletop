@@ -24,10 +24,12 @@ class FogOfWar(RelativeLayout):
     autoscale = BooleanProperty(False)
 
     def on_autoscale(self, instance, value):
-        self._autoscale()
+        if self.autoscale:
+            self._autoscale()
 
     def on_size(self, instance, value):
-        self._autoscale()
+        if self.autoscale:
+            self._autoscale()
 
     def _autoscale(self):
         img_w, img_h = self.ids.map.texture.size
@@ -43,6 +45,8 @@ class FogOfWar(RelativeLayout):
     current_rect = None
     current_origin = None
     def on_map_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            return
         if touch.button == 'left':
             self.current_origin = touch.pos
             self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
@@ -54,12 +58,16 @@ class FogOfWar(RelativeLayout):
             self.scale += 0.1
 
     def on_map_touch_move(self, touch):
+        if not self.collide_point(*touch.pos):
+            return
         if touch.button == 'left':
             pos, size = bounding_rect(self.current_origin, touch.pos)
             self.current_rect.pos = pos
             self.current_rect.size = size
 
     def on_map_touch_up(self, touch):
+        if not self.collide_point(*touch.pos):
+            return
         if touch.button == 'left':
             if (self.current_rect and
                 self.current_rect.width < 5 and
