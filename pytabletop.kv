@@ -20,6 +20,10 @@
         size: self.texture.size if self.texture else (100, 100)
         size_hint: None, None
 
+        on_touch_down: root.on_map_touch_down(args[1])
+        on_touch_move: root.on_map_touch_move(args[1])
+        on_touch_up: root.on_map_touch_up(args[1])
+
         canvas.after:
             Color:
                 rgba: 0, 0, 0, 0.7
@@ -81,6 +85,13 @@ FloatLayout:
             pos: 50, 750
             size: 200, 200
             size_hint: None, None
+
+        Button:
+            pos: 0, 0
+            size: 100, 100
+            size_hint: None, None
+            on_release: print 'hello'
+            text: "hello"
 
 
     Button:

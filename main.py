@@ -9,9 +9,41 @@ from kivy.properties import ObjectProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.behaviors import DragBehavior
 
+def bounding_rect(pos1, pos2):
+    x1, y1 = pos1
+    x2, y2 = pos2
+    x1, x2 = sorted([x1, x2])
+    y1, y2 = sorted([y1, y2])
+    pos = x1, y1
+    size = (x2-x1, y2-y1)
+    return pos, size
 
 class FogOfWar(RelativeLayout):
     source = ObjectProperty()
+
+    current_rect = None
+    current_origin = None
+    def on_map_touch_down(self, touch):
+        print 'down'
+        self.current_origin = touch.pos
+        self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
+        self.add_widget(self.current_rect)
+        touch.grab(self.ids.map)
+
+    def on_map_touch_move(self, touch):
+        print 'move'
+        pos, size = bounding_rect(self.current_origin, touch.pos)
+        self.current_rect.pos = pos
+        self.current_rect.size = size
+
+    def on_map_touch_up(self, touch):
+        print 'up'
+        if self.current_rect and self.current_rect.width < 5 and self.current_rect.height < 5:
+            # too small, remove it!
+            self.remove_widget(self.current_rect)
+            self.current_rect = None
+            self.current_origin = None
+
 
 class RevealRectangle(DragBehavior, Widget):
     texture = ObjectProperty(None, allownone=True)
@@ -30,6 +62,12 @@ class RevealRectangle(DragBehavior, Widget):
     on_pos = _update_texture
     on_size = _update_texture
     on_parent = _update_texture
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            if touch.is_double_tap:
+                self.parent.remove_widget(self)
+        super(RevealRectangle, self).on_touch_down(touch)
 
 
 class PyTableTopApp(App):
