@@ -26,7 +26,7 @@
 
         canvas.after:
             Color:
-                rgba: 0, 0, 0, 0.7
+                rgba: 0, 0, 0, 0.8
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -46,8 +46,10 @@
             size: self.size
             pos: self.pos
 
+        Color:
+            rgba: 1, 0, 0, 1
         Line:
-            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            rectangle: self.x,self.y,self.width,self.height
             dash_offset: 5
             dash_length: 3
 
@@ -85,14 +87,6 @@ FloatLayout:
             pos: 50, 750
             size: 200, 200
             size_hint: None, None
-
-        Button:
-            pos: 0, 0
-            size: 100, 100
-            size_hint: None, None
-            on_release: print 'hello'
-            text: "hello"
-
 
     Button:
         pos: 0, 1200
