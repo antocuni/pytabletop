@@ -13,6 +13,13 @@
 #             dash_length: 3
 
 <FogOfWar>:
+    canvas.before:
+        PushMatrix
+        Scale:
+            xyz: self.scale, self.scale, self.scale
+    canvas.after:
+        PopMatrix
+
     Image:
         id: map
         source: root.source

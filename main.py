@@ -5,7 +5,7 @@ kivy.require('1.0.6')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, NumericProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.behaviors import DragBehavior
 
@@ -20,28 +20,41 @@ def bounding_rect(pos1, pos2):
 
 class FogOfWar(RelativeLayout):
     source = ObjectProperty()
+    scale = NumericProperty(1.0)
+
+    def to_local(self, x, y, **k):
+        xx = (x - self.x) / self.scale
+        yy = (y - self.y) / self.scale
+        return xx, yy
 
     current_rect = None
     current_origin = None
     def on_map_touch_down(self, touch):
-        self.current_origin = touch.pos
-        self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
-        self.add_widget(self.current_rect)
-        touch.grab(self.ids.map)
+        if touch.button == 'left':
+            self.current_origin = touch.pos
+            self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
+            self.add_widget(self.current_rect)
+            touch.grab(self.ids.map)
+        elif touch.button == 'scrolldown':
+            self.scale = max(0.1, self.scale - 0.1)
+        elif touch.button == 'scrollup':
+            self.scale += 0.1
 
     def on_map_touch_move(self, touch):
-        pos, size = bounding_rect(self.current_origin, touch.pos)
-        self.current_rect.pos = pos
-        self.current_rect.size = size
+        if touch.button == 'left':
+            pos, size = bounding_rect(self.current_origin, touch.pos)
+            self.current_rect.pos = pos
+            self.current_rect.size = size
 
     def on_map_touch_up(self, touch):
-        if (self.current_rect and
-            self.current_rect.width < 5 and
-            self.current_rect.height < 5):
-            # too small, remove it!
-            self.remove_widget(self.current_rect)
-            self.current_rect = None
-            self.current_origin = None
+        if touch.button == 'left':
+            if (self.current_rect and
+                self.current_rect.width < 5 and
+                self.current_rect.height < 5):
+                # too small, remove it!
+                self.remove_widget(self.current_rect)
+                self.current_rect = None
+                self.current_origin = None
 
 
 class RevealRectangle(DragBehavior, Widget):
