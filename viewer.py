@@ -19,12 +19,7 @@ class Viewer(App):
         return True
 
     def reveal(self, d):
-        fog = self.root.ids.fog
-        fog.clear()
-        for rect in d['areas']:
-            assert rect['type'] == 'rectangle'
-            r = RevealRectangle(pos=rect['pos'], size=rect['size'])
-            fog.add_widget(r)
+        self.root.ids.fog.set_json_areas(d)
 
 if __name__ == '__main__':
     Viewer().run()

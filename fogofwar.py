@@ -91,10 +91,27 @@ class FogOfWar(RelativeLayout):
 
     def clear(self):
         # remove all the revealed areas
-        # remove all the RevealRectangle from fog2
         for w in self.children[:]:
             if isinstance(w, RevealRectangle):
                 self.remove_widget(w)
+
+    def get_json_areas(self):
+        areas = []
+        for rect in self.children:
+            if isinstance(rect, RevealRectangle):
+                areas.append({
+                    'type': 'rectangle',
+                    'pos': rect.pos,
+                    'size': rect.size
+                    })
+        return {'areas': areas}
+
+    def set_json_areas(self, d):
+        self.clear()
+        for rect in d['areas']:
+            assert rect['type'] == 'rectangle'
+            r = RevealRectangle(pos=rect['pos'], size=rect['size'])
+            self.add_widget(r)
 
     def on_autoscale(self, instance, value):
         if self.autoscale:

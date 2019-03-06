@@ -9,23 +9,18 @@ from fogofwar import RevealRectangle
 
 class PyTableTopApp(App):
 
+    REVEAL_URL = 'http://127.0.0.1:5000/reveal/'
+
     def on_pause(self):
         return True
 
     def do_sync(self):
+        import requests
         fog = self.root.ids.fog
-        fog2 = self.root.ids.fog2
-
-        # remove all the RevealRectangle from fog2
-        for w in fog2.children[:]:
-            if isinstance(w, RevealRectangle):
-                fog2.remove_widget(w)
-        
-        # readd new children
-        for rect in fog.children:
-            if isinstance(rect, RevealRectangle):
-                newrect = RevealRectangle(pos=rect.pos, size=rect.size)
-                fog2.add_widget(newrect)
+        areas = fog.get_json_areas()
+        resp = requests.post(self.REVEAL_URL, json=areas)
+        print resp
+        print resp.text
 
 if __name__ == '__main__':
     PyTableTopApp().run()
