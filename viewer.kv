@@ -21,7 +21,9 @@ BoxLayout:
         height: 100
         text: "Viewer Server: Count %d" % app.server.count
 
-    FogOfWar:
-        id: fog
-        source: "grid.png"
-        autoscale: True
+    Scatter:
+        do_rotation: False
+        FogOfWar:
+            id: fog
+            source: "grid.png"
+            autoscale: False
