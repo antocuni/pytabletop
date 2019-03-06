@@ -7,7 +7,7 @@ from kivy.app import App
 from fogofwar import RevealRectangle
 
 
-class PyTableTopApp(App):
+class DMApp(App):
 
     REVEAL_URL = 'http://127.0.0.1:5000/reveal/'
 
@@ -23,4 +23,4 @@ class PyTableTopApp(App):
         print resp.text
 
 if __name__ == '__main__':
-    PyTableTopApp().run()
+    DMApp().run()
