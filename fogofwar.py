@@ -89,6 +89,13 @@ class FogOfWar(RelativeLayout):
     scale = NumericProperty(1.0)
     autoscale = BooleanProperty(False)
 
+    def clear(self):
+        # remove all the revealed areas
+        # remove all the RevealRectangle from fog2
+        for w in self.children[:]:
+            if isinstance(w, RevealRectangle):
+                self.remove_widget(w)
+
     def on_autoscale(self, instance, value):
         if self.autoscale:
             self._autoscale()

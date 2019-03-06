@@ -1,6 +1,6 @@
 import threading
 from kivy.event import EventDispatcher
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 import flask
 from flask import current_app
 
@@ -10,12 +10,24 @@ def index():
     current_app.server.count += 1
     return 'Count: %d' % current_app.server.count
 
+@tabletop.route('/reveal/', methods=['POST'])
+def reveal():
+    reveal_dict = flask.request.json
+    if reveal_dict is None:
+        return error('Expected JSON request', 400)
+    #
+    current_app.logger.info('\nReveal: %s' % reveal_dict)
+    current_app.server.kivy_app.reveal(reveal_dict)
+    return flask.jsonify(result='OK')
+
+
 ###########################################
 
 class ViewerServer(EventDispatcher):
     thread = None
     map_name = StringProperty()
     count = NumericProperty(0)
+    kivy_app = ObjectProperty()
 
     def create_app(self):
         self.app = flask.Flask('tabletop_viewer')
