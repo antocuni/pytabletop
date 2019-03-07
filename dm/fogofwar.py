@@ -85,6 +85,7 @@ def bounding_rect(pos1, pos2):
     return pos, size
 
 class FogOfWar(RelativeLayout):
+    dm = BooleanProperty(False)
     source = ObjectProperty()
     scale = NumericProperty(1.0)
     autoscale = BooleanProperty(False)
@@ -140,7 +141,7 @@ class FogOfWar(RelativeLayout):
     current_rect = None
     current_origin = None
     def on_map_touch_down(self, touch):
-        if not self.collide_point(*touch.pos):
+        if not self.dm or not self.collide_point(*touch.pos):
             return
         button = self.get_button(touch)
         if button == 'left':
@@ -154,7 +155,7 @@ class FogOfWar(RelativeLayout):
             self.scale += 0.1
 
     def on_map_touch_move(self, touch):
-        if not self.collide_point(*touch.pos):
+        if not self.dm or not self.collide_point(*touch.pos):
             return
         if self.get_button(touch) == 'left':
             pos, size = bounding_rect(self.current_origin, touch.pos)
@@ -162,7 +163,7 @@ class FogOfWar(RelativeLayout):
             self.current_rect.size = size
 
     def on_map_touch_up(self, touch):
-        if not self.collide_point(*touch.pos):
+        if not self.dm or not self.collide_point(*touch.pos):
             return
         if self.get_button(touch) == 'left':
             if (self.current_rect and
