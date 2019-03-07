@@ -8,10 +8,10 @@ from server import ViewerServer
 from fogofwar import RevealRectangle
 
 
-class Viewer(App):
+class ViewerApp(App):
 
     def __init__(self, *args, **kwargs):
-        super(Viewer, self).__init__(*args, **kwargs)
+        super(ViewerApp, self).__init__(*args, **kwargs)
         self.server = ViewerServer(kivy_app=self)
         self.server.start()
 
@@ -22,4 +22,4 @@ class Viewer(App):
         self.root.ids.fog.set_json_areas(d)
 
 if __name__ == '__main__':
-    Viewer().run()
+    ViewerApp().run()
