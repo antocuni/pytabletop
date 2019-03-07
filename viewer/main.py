@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('libs')
+
 import kivy
 kivy.require('1.0.6')
 
