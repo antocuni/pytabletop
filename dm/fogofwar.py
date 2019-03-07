@@ -15,6 +15,12 @@ Builder.load_string("""
             xyz: self.scale, self.scale, self.scale
     canvas.after:
         PopMatrix
+        ## Color:
+        ##     rgba: 1, 0, 1, 1
+        ## Line:
+        ##     rectangle: self.x,self.y,self.width,self.height
+        ##     dash_offset: 5
+        ##     dash_length: 3
 
     Image:
         id: map
@@ -89,6 +95,7 @@ class FogOfWar(RelativeLayout):
     source = ObjectProperty()
     scale = NumericProperty(1.0)
     autoscale = BooleanProperty(False)
+    allow_scale = BooleanProperty(False)
 
     def clear(self):
         # remove all the revealed areas
@@ -149,13 +156,13 @@ class FogOfWar(RelativeLayout):
             self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
             self.add_widget(self.current_rect)
             touch.grab(self.ids.map)
-        elif button == 'scrolldown':
+        elif button == 'scrolldown' and self.allow_scale:
             self.scale = max(0.1, self.scale - 0.1)
-        elif button == 'scrollup':
+        elif button == 'scrollup' and self.allow_scale:
             self.scale += 0.1
 
     def on_map_touch_move(self, touch):
-        if not self.dm or not self.collide_point(*touch.pos):
+        if not self.dm: #or not self.collide_point(*touch.pos):
             return
         if self.get_button(touch) == 'left':
             pos, size = bounding_rect(self.current_origin, touch.pos)
@@ -163,7 +170,7 @@ class FogOfWar(RelativeLayout):
             self.current_rect.size = size
 
     def on_map_touch_up(self, touch):
-        if not self.dm or not self.collide_point(*touch.pos):
+        if not self.dm: #or not self.collide_point(*touch.pos):
             return
         if self.get_button(touch) == 'left':
             if (self.current_rect and
@@ -171,8 +178,8 @@ class FogOfWar(RelativeLayout):
                 self.current_rect.height < 5):
                 # too small, remove it!
                 self.remove_widget(self.current_rect)
-                self.current_rect = None
-                self.current_origin = None
+            self.current_rect = None
+            self.current_origin = None
 
 
 class RevealRectangle(DragBehavior, Widget):
@@ -180,11 +187,9 @@ class RevealRectangle(DragBehavior, Widget):
 
     def _update_texture(self, instance, value):
         if not self.parent:
-            #print 'no parent'
             return
         map_texture = self.parent.ids.map.texture
         if not map_texture:
-            #print 'no texture'
             return
         self.texture = map_texture.get_region(self.x, self.y,
                                               self.width, self.height)
