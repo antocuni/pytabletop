@@ -55,12 +55,12 @@ Builder.load_string("""
             size: self.size
             pos: self.pos
 
-        Color:
-            rgba: 1, 0, 0, 1
-        Line:
-            rectangle: self.x,self.y,self.width,self.height
-            dash_offset: 5
-            dash_length: 3
+        ## Color:
+        ##     rgba: 1, 0, 0, 1
+        ## Line:
+        ##     rectangle: self.x,self.y,self.width,self.height
+        ##     dash_offset: 5
+        ##     dash_length: 3
 
 
 # <RevealEllipse>:
@@ -82,6 +82,10 @@ Builder.load_string("""
 
 
 def bounding_rect(pos1, pos2):
+    if pos1 is None or pos2 is None:
+        # temporary workaround
+        print 'wrong position :(', pos1, pos2
+        return (0, 0), (1, 1)
     x1, y1 = pos1
     x2, y2 = pos2
     x1, x2 = sorted([x1, x2])
