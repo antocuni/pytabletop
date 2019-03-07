@@ -132,25 +132,31 @@ class FogOfWar(RelativeLayout):
         yy = (y - self.y) / self.scale
         return xx, yy
 
+    def get_button(self, touch):
+        # on Android we don't have buttons, we assume it's left, i.e. the
+        # default
+        return getattr(touch, 'button', 'left')
+
     current_rect = None
     current_origin = None
     def on_map_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        if touch.button == 'left':
+        button = self.get_button(touch)
+        if button == 'left':
             self.current_origin = touch.pos
             self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
             self.add_widget(self.current_rect)
             touch.grab(self.ids.map)
-        elif touch.button == 'scrolldown':
+        elif button == 'scrolldown':
             self.scale = max(0.1, self.scale - 0.1)
-        elif touch.button == 'scrollup':
+        elif button == 'scrollup':
             self.scale += 0.1
 
     def on_map_touch_move(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        if touch.button == 'left':
+        if self.get_button(touch) == 'left':
             pos, size = bounding_rect(self.current_origin, touch.pos)
             self.current_rect.pos = pos
             self.current_rect.size = size
@@ -158,7 +164,7 @@ class FogOfWar(RelativeLayout):
     def on_map_touch_up(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        if touch.button == 'left':
+        if self.get_button(touch) == 'left':
             if (self.current_rect and
                 self.current_rect.width < 5 and
                 self.current_rect.height < 5):
