@@ -43,7 +43,7 @@ Builder.load_string("""
 
 <RevealRectangle>:
     drag_rectangle: self.x, self.y, self.width, self.height
-    drag_timeout: 10000000
+    drag_timeout: 10000000 if self.dm else 0 # enable dragging only for dm
     drag_distance: 0
     size_hint: None, None
 
@@ -122,7 +122,8 @@ class FogOfWar(RelativeLayout):
         self.clear()
         for rect in d['areas']:
             assert rect['type'] == 'rectangle'
-            r = RevealRectangle(pos=rect['pos'], size=rect['size'])
+            r = RevealRectangle(pos=rect['pos'], size=rect['size'],
+                                dm=self.dm)
             self.add_widget(r)
 
     def on_autoscale(self, instance, value):
@@ -157,7 +158,8 @@ class FogOfWar(RelativeLayout):
         button = self.get_button(touch)
         if button == 'left':
             self.current_origin = touch.pos
-            self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1))
+            self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1),
+                                                dm=self.dm)
             self.add_widget(self.current_rect)
             touch.grab(self.ids.map)
         elif button == 'scrolldown' and self.allow_scale:
@@ -187,6 +189,7 @@ class FogOfWar(RelativeLayout):
 
 
 class RevealRectangle(DragBehavior, Widget):
+    dm = BooleanProperty(False)
     texture = ObjectProperty(None, allownone=True)
 
     def _update_texture(self, instance, value):
