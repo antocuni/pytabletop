@@ -35,7 +35,7 @@ Builder.load_string("""
 
         canvas.after:
             Color:
-                rgba: 0, 0, 0, 0.8
+                rgba: (0, 0, 0, 0.8) if root.dm else (0, 0, 0, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
