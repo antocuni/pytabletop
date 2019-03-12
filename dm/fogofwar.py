@@ -147,6 +147,7 @@ class FogOfWar(ScatterLayout):
             pos, size = bounding_rect(self.current_origin, touch.pos)
             self.current_rect.pos = pos
             self.current_rect.size = size
+            return True
 
     def on_map_touch_up(self, touch):
         if not self.dm: #or not self.collide_point(*touch.pos):

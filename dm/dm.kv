@@ -13,16 +13,38 @@
 #             dash_length: 3
 
 
-BoxLayout:
-    orientation: 'vertical'
-
-    Button:
-        size_hint_y: None
-        height: 100
-        on_release: app.do_sync()
-        text: "sync"
+FloatLayout:
 
     FogOfWar:
         id: fog
         source: "map.png"
         dm: True
+        # canvas.after:
+        #     Color:
+        #         rgb: 1, 1, 0
+
+        #     Line:
+        #         rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+        #         dash_offset: 5
+        #         dash_length: 3
+
+    # toolbar
+    BoxLayout:
+        right: root.right
+        orientation: 'vertical'
+        size_hint_x: None
+        width: 100
+
+        Button:
+            text: "sync"
+            size_hint_y: None
+            height: 100
+            on_release: app.do_sync()
+
+        Button:
+            text: "quit"
+            size_hint_y: None
+            height: 100
+
+        Label:
+            text: "" # placeholder
