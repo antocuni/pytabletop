@@ -10,6 +10,8 @@ from kivy.app import App
 from server import ViewerServer
 from fogofwar import RevealRectangle
 
+from kivy.uix.scatter import Scatter, ScatterPlane
+from kivy.uix.scatterlayout import ScatterPlaneLayout
 
 class ViewerApp(App):
 

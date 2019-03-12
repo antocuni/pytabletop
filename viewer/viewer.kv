@@ -15,17 +15,14 @@
 
 BoxLayout:
     orientation: 'vertical'
-
     Label:
         size_hint_y: None
         height: 50
         text: "Map Viewer"
 
-    Scatter:
-        do_rotation: False
+    BoxLayout:
+        orientation: 'horizontal'
         FogOfWar:
-            size: self.parent.size
             id: fog
             source: "map.png"
-            autoscale: True
-
+            dm: False

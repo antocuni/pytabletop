@@ -5,6 +5,7 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty, NumericProperty, BooleanProperty
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.scatterlayout import ScatterLayout
 from kivy.uix.behaviors import DragBehavior
 
 Builder.load_string("""
@@ -16,6 +17,10 @@ Builder.load_string("""
     ##         rectangle: self.x,self.y,self.width,self.height
     ##         dash_offset: 5
     ##         dash_length: 3
+
+    do_rotation: False
+    do_translation: False
+    do_scale: False
 
     Image:
         id: map
@@ -89,7 +94,8 @@ def bounding_rect(pos1, pos2):
     size = (x2-x1, y2-y1)
     return pos, size
 
-class FogOfWar(RelativeLayout):
+#class FogOfWar(RelativeLayout):
+class FogOfWar(ScatterLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
 
@@ -101,7 +107,7 @@ class FogOfWar(RelativeLayout):
 
     def get_json_areas(self):
         areas = []
-        for rect in self.children:
+        for rect in self.content.children:
             if isinstance(rect, RevealRectangle):
                 areas.append({
                     'type': 'rectangle',
@@ -164,7 +170,7 @@ class RevealRectangle(DragBehavior, Widget):
     def _update_texture(self, instance, value):
         if not self.parent:
             return
-        map_texture = self.parent.ids.map.texture
+        map_texture = self.parent.parent.ids.map.texture
         if not map_texture:
             return
         self.texture = map_texture.get_region(self.x, self.y,
