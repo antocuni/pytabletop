@@ -9,18 +9,13 @@ from kivy.uix.behaviors import DragBehavior
 
 Builder.load_string("""
 <FogOfWar>:
-    canvas.before:
-        PushMatrix
-        Scale:
-            xyz: self.scale, self.scale, self.scale
-    canvas.after:
-        PopMatrix
-        ## Color:
-        ##     rgba: 1, 0, 1, 1
-        ## Line:
-        ##     rectangle: self.x,self.y,self.width,self.height
-        ##     dash_offset: 5
-        ##     dash_length: 3
+    ## canvas.after:
+    ##     Color:
+    ##         rgba: 1, 0, 1, 1
+    ##     Line:
+    ##         rectangle: self.x,self.y,self.width,self.height
+    ##         dash_offset: 5
+    ##         dash_length: 3
 
     Image:
         id: map
@@ -97,9 +92,6 @@ def bounding_rect(pos1, pos2):
 class FogOfWar(RelativeLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
-    scale = NumericProperty(1.0)
-    autoscale = BooleanProperty(False)
-    allow_scale = BooleanProperty(False)
 
     def clear(self):
         # remove all the revealed areas
@@ -126,25 +118,6 @@ class FogOfWar(RelativeLayout):
                                 dm=self.dm)
             self.add_widget(r)
 
-    def on_autoscale(self, instance, value):
-        if self.autoscale:
-            self._autoscale()
-
-    def on_size(self, instance, value):
-        if self.autoscale:
-            self._autoscale()
-
-    def _autoscale(self):
-        img_w, img_h = self.ids.map.texture.size
-        kx = self.width / float(img_w)
-        ky = self.height / float(img_h)
-        self.scale = min(kx, ky)
-
-    def to_local(self, x, y, **k):
-        xx = (x - self.x) / self.scale
-        yy = (y - self.y) / self.scale
-        return xx, yy
-
     def get_button(self, touch):
         # on Android we don't have buttons, we assume it's left, i.e. the
         # default
@@ -162,10 +135,6 @@ class FogOfWar(RelativeLayout):
                                                 dm=self.dm)
             self.add_widget(self.current_rect)
             touch.grab(self.ids.map)
-        elif button == 'scrolldown' and self.allow_scale:
-            self.scale = max(0.1, self.scale - 0.1)
-        elif button == 'scrollup' and self.allow_scale:
-            self.scale += 0.1
 
     def on_map_touch_move(self, touch):
         if not self.dm: #or not self.collide_point(*touch.pos):
