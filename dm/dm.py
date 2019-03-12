@@ -8,20 +8,6 @@ from kivy.app import App
 from kivy.properties import StringProperty
 from fogofwar import RevealRectangle
 
-from kivy.uix.scatter import Scatter
-from kivy.uix.scatterlayout import ScatterLayout, ScatterPlaneLayout
-
-class MyLayout(ScatterPlaneLayout):
-    def on_touch_down(self, touch):
-        if not self.collide_point(touch.x, touch.y):
-            return False
-        touch.push()
-        touch.apply_transform_2d(self.to_local)
-        print touch.pos
-        touch.pop()
-        return super(MyLayout, self).on_touch_down(touch)
-
-
 
 class DMApp(App):
     server = StringProperty('127.0.0.1')

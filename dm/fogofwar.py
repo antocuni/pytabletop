@@ -9,14 +9,6 @@ from kivy.uix.behaviors import DragBehavior
 
 Builder.load_string("""
 <FogOfWar>:
-    ## canvas.after:
-    ##     Color:
-    ##         rgba: 1, 0, 1, 1
-    ##     Line:
-    ##         rectangle: self.x,self.y,self.width,self.height
-    ##         dash_offset: 5
-    ##         dash_length: 3
-
     do_rotation: False
     do_translation: False
     do_scale: False
@@ -59,13 +51,6 @@ Builder.load_string("""
             texture: self.texture
             size: self.size
             pos: self.pos
-
-        ## Color:
-        ##     rgba: 1, 0, 0, 1
-        ## Line:
-        ##     rectangle: self.x,self.y,self.width,self.height
-        ##     dash_offset: 5
-        ##     dash_length: 3
 
 
 # <RevealEllipse>:
