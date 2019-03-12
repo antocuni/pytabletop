@@ -4,7 +4,6 @@ kivy.require('1.0.6')
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty, NumericProperty, BooleanProperty
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.scatterlayout import ScatterLayout
 from kivy.uix.behaviors import DragBehavior
 
@@ -94,7 +93,6 @@ def bounding_rect(pos1, pos2):
     size = (x2-x1, y2-y1)
     return pos, size
 
-#class FogOfWar(RelativeLayout):
 class FogOfWar(ScatterLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
@@ -121,7 +119,7 @@ class FogOfWar(ScatterLayout):
         for rect in d['areas']:
             assert rect['type'] == 'rectangle'
             r = RevealRectangle(pos=rect['pos'], size=rect['size'],
-                                dm=self.dm)
+                                dm=self.dm, fog=self)
             self.add_widget(r)
 
     def get_button(self, touch):
@@ -138,7 +136,7 @@ class FogOfWar(ScatterLayout):
         if button == 'left':
             self.current_origin = touch.pos
             self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1),
-                                                dm=self.dm)
+                                                dm=self.dm, fog=self)
             self.add_widget(self.current_rect)
             touch.grab(self.ids.map)
 
@@ -166,11 +164,12 @@ class FogOfWar(ScatterLayout):
 class RevealRectangle(DragBehavior, Widget):
     dm = BooleanProperty(False)
     texture = ObjectProperty(None, allownone=True)
+    fog = ObjectProperty(None)
 
     def _update_texture(self, instance, value):
-        if not self.parent:
+        if not self.fog:
             return
-        map_texture = self.parent.parent.ids.map.texture
+        map_texture = self.fog.ids.map.texture
         if not map_texture:
             return
         self.texture = map_texture.get_region(self.x, self.y,
