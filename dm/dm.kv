@@ -2,20 +2,24 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
-# <Widget>:
-#     canvas.after:
-#         Color:
-#             rgb: 1, 1, 0
-        
-#         Line:
-#             rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-#             dash_offset: 5
-#             dash_length: 3
+<Widget>:
+    # default: transparent
+    border_color: (1, 1, 1, 0)
+
+    canvas.after:
+        Color:
+            rgba: self.border_color
+
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            dash_offset: 5
+            dash_length: 3
 
 
 FloatLayout:
 
     FogOfWar:
+        #border_color: (1, 1, 0, 1)
         id: fog
         source: "map.png"
         dm: True
