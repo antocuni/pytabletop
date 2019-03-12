@@ -99,7 +99,17 @@ def bounding_rect(pos1, pos2):
     size = (x2-x1, y2-y1)
     return pos, size
 
-class FogOfWar(ScatterLayout):
+
+class MyScatterPlaneLayout(ScatterLayout):
+    # the ScatterPlaneLayout which is distributed with kivy 1.9.1 seems buggy:
+    # it inherits from ScatterPlane instead of ScatterLayout. This is
+    # supposedly the correct version
+
+    def collide_point(self, x, y):
+        return True
+
+
+class FogOfWar(MyScatterPlaneLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
 
