@@ -99,7 +99,7 @@ class FogOfWar(ScatterLayout):
 
     def clear(self):
         # remove all the revealed areas
-        for w in self.children[:]:
+        for w in self.content.children[:]:
             if isinstance(w, RevealRectangle):
                 self.remove_widget(w)
 
