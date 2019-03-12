@@ -58,10 +58,19 @@ FloatLayout:
             on_release: root.ids.fog.rotation -= 90
 
         Button:
+            text: "Zoom +"
+            size_hint_y: None
+            height: 50
+            on_release: root.ids.fog.scale += 0.1
+
+        Button:
+            text: "Zoom -"
+            size_hint_y: None
+            height: 50
+            on_release: root.ids.fog.scale -= 0.1
+
+        Button:
             text: "Quit"
             size_hint_y: None
             height: 50
             on_release: app.stop()
-
-        Label:
-            text: "" # placeholder
