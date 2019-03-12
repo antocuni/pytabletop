@@ -41,9 +41,15 @@ Builder.load_string("""
 
 
 <RevealRectangle>:
-    drag_rectangle: self.x, self.y, self.width, self.height
-    drag_timeout: 10000000 if self.dm else 0 # enable dragging only for dm
     drag_distance: 0
+    drag_rect_x: self.x
+    drag_rect_y: self.y
+
+    # enable dragging only for dm
+    drag_rect_width: self.width if self.dm else 0
+    drag_rect_height: self.height if self.dm else 0
+    drag_timeout: 10000000 if self.dm else 0
+
     size_hint: None, None
 
     canvas.after:
@@ -182,7 +188,8 @@ class RevealRectangle(DragBehavior, Widget):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            if touch.is_double_tap:
+            if self.dm and touch.is_double_tap:
                 self.parent.remove_widget(self)
-            super(RevealRectangle, self).on_touch_down(touch)
-            return True
+                return True
+            else:
+                return super(RevealRectangle, self).on_touch_down(touch)
