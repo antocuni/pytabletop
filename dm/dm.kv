@@ -22,10 +22,7 @@ BoxLayout:
         on_release: app.do_sync()
         text: "sync"
 
-    BoxLayout:
-        orientation: 'horizontal'
-            
-        FogOfWar:
-            id: fog
-            source: "map.png"
-            dm: True
+    FogOfWar:
+        id: fog
+        source: "map.png"
+        dm: True
