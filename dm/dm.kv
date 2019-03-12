@@ -19,10 +19,11 @@
 FloatLayout:
 
     FogOfWar:
-        #border_color: (1, 1, 0, 1)
         id: fog
+        locked: root.ids.locked.active
         source: "map.png"
         dm: True
+        #border_color: (1, 1, 0, 1)
 
     # toolbar
     BoxLayout:
@@ -36,6 +37,17 @@ FloatLayout:
             size_hint_y: None
             height: 50
             on_release: app.do_sync()
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 50
+
+            Label:
+                text: "Locked"
+            CheckBox:
+                id: locked
+                active: True
 
         Button:
             text: "Rotate +90"

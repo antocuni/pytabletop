@@ -9,9 +9,10 @@ from kivy.uix.behaviors import DragBehavior
 
 Builder.load_string("""
 <FogOfWar>:
-    do_rotation: False
-    do_translation: False
-    do_scale: False
+    locked: False
+    do_rotation: not self.locked
+    do_translation: not self.locked
+    do_scale: not self.locked
 
     Image:
         id: map
