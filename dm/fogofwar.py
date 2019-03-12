@@ -13,6 +13,7 @@ Builder.load_string("""
     do_rotation: not self.locked
     do_translation: not self.locked
     do_scale: not self.locked
+    auto_bring_to_front: False
 
     Image:
         id: map
