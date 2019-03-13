@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import kivy
-kivy.require('1.0.6')
+kivy.require('1.9.0')
 
 import sys
 from kivy.app import App
 from kivy.properties import StringProperty
 from fogofwar import RevealRectangle
+from tools import RectangleTool
 
 
 class DMApp(App):
@@ -25,6 +26,9 @@ class DMApp(App):
         resp = requests.post(self.reveal_url(), json=areas)
         print resp
         print resp.text
+
+    def do_rect(self):
+        self.root.ids.fog.tool = RectangleTool()
 
 
 if __name__ == '__main__':

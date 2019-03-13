@@ -1,8 +1,6 @@
-import kivy
-kivy.require('1.0.6')
-
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.event import EventDispatcher
 from kivy.properties import ObjectProperty, NumericProperty, BooleanProperty
 from kivy.uix.scatterlayout import ScatterLayout
 from kivy.uix.behaviors import DragBehavior
@@ -22,9 +20,9 @@ Builder.load_string("""
         size: self.texture.size if self.texture else (100, 100)
         size_hint: None, None
 
-        on_touch_down: root.on_map_touch_down(args[1])
-        on_touch_move: root.on_map_touch_move(args[1])
-        on_touch_up: root.on_map_touch_up(args[1])
+        on_touch_down: root.tool.on_touch_down(root, args[1])
+        on_touch_move: root.tool.on_touch_move(root, args[1])
+        on_touch_up: root.tool.on_touch_up(root, args[1])
 
         canvas.after:
             Color:
@@ -68,30 +66,27 @@ Builder.load_string("""
 #             pos: self.pos
 #             size: self.size
 #             texture: self.texture
-
-
 """)
 
+class Tool(EventDispatcher):
+    """
+    Abstract class for a generic tool which can do interactive actions on the
+    FogOfWar
+    """
 
-def bounding_rect(pos1, pos2):
-    if pos1 is None or pos2 is None:
-        # temporary workaround
-        print 'wrong position :(', pos1, pos2
-        return (0, 0), (1, 1)
-    x1, y1 = pos1
-    x2, y2 = pos2
-    x1, x2 = sorted([x1, x2])
-    y1, y2 = sorted([y1, y2])
-    pos = x1, y1
-    size = (x2-x1, y2-y1)
-    return pos, size
+    def on_touch_down(self, fog, touch):
+        pass
 
+    def on_touch_move(self, fog, touch):
+        pass
+
+    def on_touch_up(self, fog, touch):
+        pass
 
 class MyScatterPlaneLayout(ScatterLayout):
     # the ScatterPlaneLayout which is distributed with kivy 1.9.1 seems buggy:
     # it inherits from ScatterPlane instead of ScatterLayout. This is
     # supposedly the correct version
-
     def collide_point(self, x, y):
         return True
 
@@ -99,6 +94,7 @@ class MyScatterPlaneLayout(ScatterLayout):
 class FogOfWar(MyScatterPlaneLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
+    tool = ObjectProperty(Tool())
 
     def clear(self):
         # remove all the revealed areas
@@ -124,45 +120,6 @@ class FogOfWar(MyScatterPlaneLayout):
             r = RevealRectangle(pos=rect['pos'], size=rect['size'],
                                 dm=self.dm, fog=self)
             self.add_widget(r)
-
-    def get_button(self, touch):
-        # on Android we don't have buttons, we assume it's left, i.e. the
-        # default
-        return getattr(touch, 'button', 'left')
-
-    current_rect = None
-    current_origin = None
-    def on_map_touch_down(self, touch):
-        if not self.dm or not self.collide_point(*touch.pos):
-            return
-        button = self.get_button(touch)
-        if button == 'left':
-            self.current_origin = touch.pos
-            self.current_rect = RevealRectangle(pos=touch.pos, size=(1, 1),
-                                                dm=self.dm, fog=self)
-            self.add_widget(self.current_rect)
-            touch.grab(self.ids.map)
-
-    def on_map_touch_move(self, touch):
-        if not self.dm: #or not self.collide_point(*touch.pos):
-            return
-        if self.get_button(touch) == 'left':
-            pos, size = bounding_rect(self.current_origin, touch.pos)
-            self.current_rect.pos = pos
-            self.current_rect.size = size
-            return True
-
-    def on_map_touch_up(self, touch):
-        if not self.dm: #or not self.collide_point(*touch.pos):
-            return
-        if self.get_button(touch) == 'left':
-            if (self.current_rect and
-                self.current_rect.width < 5 and
-                self.current_rect.height < 5):
-                # too small, remove it!
-                self.remove_widget(self.current_rect)
-            self.current_rect = None
-            self.current_origin = None
 
 
 class RevealRectangle(DragBehavior, Widget):
