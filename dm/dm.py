@@ -20,10 +20,13 @@ class DMApp(App):
     def on_pause(self):
         return True
 
+    @property
+    def fog(self):
+        return self.root.ids.fog
+
     def do_sync(self):
         import requests
-        fog = self.root.ids.fog
-        areas = fog.get_json_areas()
+        areas = self.fog.get_json_areas()
         resp = requests.post(self.reveal_url(), json=areas)
         print resp
         print resp.text
@@ -34,14 +37,19 @@ class DMApp(App):
         if not active_btns:
             return # it should be impossible
         tool = active_btns[0].tool
-        fog = self.root.ids.fog
-        fog.locked = (tool != 'move')
+        self.fog.locked = (tool != 'move')
         if tool == 'move':
-            fog.tool = Tool()
+            self.fog.tool = Tool()
         elif tool == 'rect':
-            fog.tool = RectangleTool()
+            self.fog.tool = RectangleTool()
         else:
             print 'Unknown tool: %s' % tool
+
+    def adjust_rotation(self):
+        rot = self.fog.rotation
+        if rot % 90 != 0:
+            self.fog.rotation = int(rot % 90) * 90
+        self.fog.rotation += 90
 
 
 if __name__ == '__main__':

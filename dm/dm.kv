@@ -58,6 +58,12 @@ FloatLayout:
             on_release: app.do_sync()
 
         Button:
+            text: "Rotate: +90"
+            size_hint_y: None
+            height: 50
+            on_release: app.adjust_rotation()
+
+        Button:
             text: "Quit"
             size_hint_y: None
             height: 50
