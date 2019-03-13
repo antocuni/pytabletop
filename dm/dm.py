@@ -6,8 +6,9 @@ kivy.require('1.9.0')
 import sys
 from kivy.app import App
 from kivy.properties import StringProperty
+from kivy.uix.togglebutton import ToggleButton
 from fogofwar import RevealRectangle
-from tools import RectangleTool
+from tools import Tool, RectangleTool
 
 
 class DMApp(App):
@@ -27,8 +28,20 @@ class DMApp(App):
         print resp
         print resp.text
 
-    def do_rect(self):
-        self.root.ids.fog.tool = RectangleTool()
+    def update_tool(self):
+        active_btns = [t for t in ToggleButton.get_widgets('tool')
+                       if t.state=='down']
+        if not active_btns:
+            return # it should be impossible
+        tool = active_btns[0].tool
+        fog = self.root.ids.fog
+        fog.locked = (tool != 'move')
+        if tool == 'move':
+            fog.tool = Tool()
+        elif tool == 'rect':
+            fog.tool = RectangleTool()
+        else:
+            print 'Unknown tool: %s' % tool
 
 
 if __name__ == '__main__':
