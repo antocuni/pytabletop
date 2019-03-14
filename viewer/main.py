@@ -7,18 +7,20 @@ import kivy
 kivy.require('1.9.0')
 
 from kivy.app import App
+from kivy.properties import StringProperty
 from server import ViewerServer
 from fogofwar import RevealRectangle
-
-from kivy.uix.scatter import Scatter, ScatterPlane
-from kivy.uix.scatterlayout import ScatterPlaneLayout
+from getip import getIP
 
 class ViewerApp(App):
+
+    IPAddress = StringProperty("")
 
     def __init__(self, *args, **kwargs):
         super(ViewerApp, self).__init__(*args, **kwargs)
         self.server = ViewerServer(kivy_app=self)
         self.server.start()
+        self.IPAddress = getIP()
 
     def on_pause(self):
         return True
