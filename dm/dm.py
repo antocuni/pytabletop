@@ -13,6 +13,7 @@ from tools import Tool, RectangleTool
 
 class DMApp(App):
     server = StringProperty('127.0.0.1')
+    tool = StringProperty("move")
 
     def reveal_url(self):
         return 'http://%s:5000/reveal/' % (self.server)
@@ -31,12 +32,7 @@ class DMApp(App):
         print resp
         print resp.text
 
-    def update_tool(self):
-        active_btns = [t for t in ToggleButton.get_widgets('tool')
-                       if t.state=='down']
-        if not active_btns:
-            return # it should be impossible
-        tool = active_btns[0].tool
+    def on_tool(self, _, tool):
         self.fog.locked = (tool != 'move')
         if tool == 'move':
             self.fog.tool = Tool()

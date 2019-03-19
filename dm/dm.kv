@@ -16,12 +16,11 @@
             dash_length: 3
 
 <ToolButton@ToggleButton>:
-    group: "tool"
     tool: ""
     size_hint_y: None
     height: 50
-    allow_no_selection: False
-    on_release: app.update_tool()
+    state: "down" if app.tool == self.tool else "normal"
+    on_release: app.tool = self.tool
 
 FloatLayout:
 
