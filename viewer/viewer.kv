@@ -16,20 +16,20 @@
             dash_length: 3
 
 
-BoxLayout:
-    orientation: 'vertical'
-    Label:
-        size_hint_y: None
-        height: 50
-        text: "Map Viewer: %s" % app.IPAddress
+<MapScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: 50
+            text: "Map Viewer: %s" % app.IPAddress
 
-    FogOfWar:
-        id: fog
-        source: "map.png"
-        dm: False
-        #border_color: (1, 1, 0, 1)
+        FogOfWar:
+            id: fog
+            source: "map.png"
+            dm: False
+            #border_color: (1, 1, 0, 1)
 
-        do_rotation: True
-        do_translation: True
-        do_scale: True
-
+            do_rotation: True
+            do_translation: True
+            do_scale: True
