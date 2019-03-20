@@ -1,10 +1,22 @@
 import threading
+from kivy.clock import mainthread
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 import flask
 from flask import current_app
 
 tabletop = flask.Blueprint('tabletop', __name__)
+
+def error(message, status=403):
+    myjson = flask.jsonify(result='error',
+                           message=message)
+    return myjson, status
+
+@mainthread
+def call_mainthread(fn, *args, **kwargs):
+    return fn(*args, **kwargs)
+
+
 @tabletop.route('/')
 def index():
     current_app.server.count += 1
@@ -20,6 +32,33 @@ def reveal():
     current_app.server.kivy_app.reveal(reveal_dict)
     return flask.jsonify(result='OK')
 
+@tabletop.route('/show_image/', methods=['GET', 'POST'])
+def show_image():
+    request = flask.request
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            return error("no file part")
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            return error("empty file")
+
+        if file:
+            image_data = file.stream.read()
+            call_mainthread(current_app.server.kivy_app.show_image,
+                            image_data)
+            return flask.jsonify(result='OK')
+    return '''
+    <!doctype html>
+    <title>Show Image</title>
+    <h1>Show Image</h1>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
 
 ###########################################
 
