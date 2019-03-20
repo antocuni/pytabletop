@@ -8,7 +8,17 @@ class Manager(ScreenManager):
         super(Manager, self).__init__()
         self.history = []
 
+    def ensure_unique_name(self, view):
+        basename = view.name
+        name = basename
+        i = 0
+        while name in self.screen_names:
+            name = '%s-%d' % (basename, i)
+            i += 1
+        view.name = name
+
     def open(self, view):
+        self.ensure_unique_name(view)
         self.unfocus_maybe()
         name = view.name
         if self.has_screen(name):

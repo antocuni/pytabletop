@@ -62,7 +62,7 @@ class ViewerApp(App):
     def show_image(self, data):
         stream = io.BytesIO(data)
         img = CoreImage(stream, ext="png")
-        self.root.open(ImageScreen(image_texture=img.texture))
+        self.root.open(ImageScreen(image_texture=img.texture, name='img'))
 
 if __name__ == '__main__':
     ViewerApp().run()
