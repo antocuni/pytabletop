@@ -33,3 +33,16 @@
             do_rotation: True
             do_translation: True
             do_scale: True
+
+<ImageScreen>:
+    FloatLayout:
+        ScatterLayout:
+            auto_bring_to_front: False
+            Image:
+                source: root.source
+        Button:
+            size_hint: None, None
+            pos_hint: {'right': 1, 'top': 1}
+            size: 50, 50
+            text: "Close"
+            on_release: app.root.go_back()

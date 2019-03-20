@@ -18,6 +18,9 @@ from getip import getIP
 class MapScreen(Screen):
     pass
 
+class ImageScreen(Screen):
+    source = StringProperty("")
+
 class ViewerApp(App):
 
     IPAddress = StringProperty("")
@@ -38,6 +41,11 @@ class ViewerApp(App):
     def on_keyboard(self, window, key, scancode, codepoint, modifier):
         if key == 27: # ESC
             return self.root.go_back()
+
+        if key == ord('a'):
+            self.show_image("../grid.png")
+            return True
+
         return False
 
     def on_pause(self):
@@ -45,6 +53,10 @@ class ViewerApp(App):
 
     def reveal(self, d):
         self.mapscreen.ids.fog.set_json_areas(d)
+
+    def show_image(self, source):
+        self.root.open(ImageScreen(source=source))
+
 
 if __name__ == '__main__':
     ViewerApp().run()
