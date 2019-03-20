@@ -37,16 +37,16 @@ def show_image():
     request = flask.request
     if request.method == 'POST':
         # check if the post request has the file part
-        if 'file' not in request.files:
-            return error("no file part")
-        file = request.files['file']
+        if 'image' not in request.files:
+            return error("no image part")
+        image = request.files['image']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
+        if image.filename == '':
             return error("empty file")
 
         if file:
-            image_data = file.stream.read()
+            image_data = image.stream.read()
             call_mainthread(current_app.server.kivy_app.show_image,
                             image_data)
             return flask.jsonify(result='OK')
