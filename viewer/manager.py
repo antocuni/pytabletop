@@ -1,11 +1,11 @@
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.uix.screenmanager import (ScreenManager, Screen,
+                                    FallOutTransition, RiseInTransition)
 from kivy.uix.behaviors.focus import FocusBehavior
 
 class Manager(ScreenManager):
     
     def __init__(self):
-        transition = SlideTransition(duration=.35)
-        super(Manager, self).__init__(transition=transition)
+        super(Manager, self).__init__()
         self.history = []
 
     def open(self, view):
@@ -14,7 +14,7 @@ class Manager(ScreenManager):
         if self.has_screen(name):
             self.remove_widget(self.get_screen(name))
         self.add_widget(view)
-        self.transition.direction = 'left'
+        self.transition = RiseInTransition()
         self.current = name
         self.history.append(view)
 
@@ -32,7 +32,7 @@ class Manager(ScreenManager):
         view = self.history.pop()
         if hasattr(view, 'close'):
             view.close()
-        self.transition.direction = 'right'
+        self.transition = FallOutTransition()
         self.current = self.history[-1].name
         return True
 
