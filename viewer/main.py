@@ -6,10 +6,12 @@ sys.path.append('libs')
 import kivy
 kivy.require('1.9.0')
 
+import io
 from kivy.app import App
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
+from kivy.core.image import Image as CoreImage
 from server import ViewerServer
 from fogofwar import RevealRectangle
 from manager import Manager
@@ -19,7 +21,8 @@ class MapScreen(Screen):
     pass
 
 class ImageScreen(Screen):
-    source = StringProperty("")
+    image_texture = ObjectProperty(None)
+
 
 class ViewerApp(App):
 
@@ -43,7 +46,9 @@ class ViewerApp(App):
             return self.root.go_back()
 
         if key == ord('a'):
-            self.show_image("../grid.png")
+            with open("port.png", "rb") as f:
+                image_data = f.read()
+            self.show_image(image_data)
             return True
 
         return False
@@ -54,9 +59,10 @@ class ViewerApp(App):
     def reveal(self, d):
         self.mapscreen.ids.fog.set_json_areas(d)
 
-    def show_image(self, source):
-        self.root.open(ImageScreen(source=source))
-
+    def show_image(self, data):
+        stream = io.BytesIO(data)
+        img = CoreImage(stream, ext="png")
+        self.root.open(ImageScreen(image_texture=img.texture))
 
 if __name__ == '__main__':
     ViewerApp().run()

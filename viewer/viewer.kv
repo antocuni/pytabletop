@@ -15,7 +15,6 @@
             dash_offset: 5
             dash_length: 3
 
-
 <MapScreen>:
     BoxLayout:
         orientation: 'vertical'
@@ -34,12 +33,14 @@
             do_translation: True
             do_scale: True
 
+
 <ImageScreen>:
     FloatLayout:
         ScatterLayout:
             auto_bring_to_front: False
             Image:
-                source: root.source
+                texture: root.image_texture
+
         Button:
             size_hint: None, None
             pos_hint: {'right': 1, 'top': 1}
