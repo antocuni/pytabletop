@@ -41,20 +41,13 @@ class ViewerApp(App):
         manager.open(self.mapscreen)
         return manager
 
+    def on_pause(self):
+        return True
+
     def on_keyboard(self, window, key, scancode, codepoint, modifier):
         if key == 27: # ESC
             return self.root.go_back()
-
-        if key == ord('a'):
-            with open("port.png", "rb") as f:
-                image_data = f.read()
-            self.show_image(image_data)
-            return True
-
         return False
-
-    def on_pause(self):
-        return True
 
     def reveal(self, d):
         self.mapscreen.ids.fog.set_json_areas(d)
