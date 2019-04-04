@@ -8,9 +8,14 @@ from urlparse import urljoin
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
-from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.screenmanager import Screen
 from fogofwar import RevealRectangle
 from tools import Tool, RectangleTool
+from manager import Manager
+
+class MapScreen(Screen):
+    pass
+
 
 def key(keycode, modifiers):
     if keycode > 255:
@@ -31,6 +36,10 @@ class DMApp(App):
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
+        self.mapscreen = MapScreen(name='map')
+        manager = Manager()
+        manager.open(self.mapscreen)
+        return manager
 
     def url(self, path):
         base = 'http://%s:%s' % (self.server, self.port)
@@ -38,6 +47,10 @@ class DMApp(App):
 
     def on_pause(self):
         return True
+
+    @property
+    def fog(self):
+        return self.mapscreen.ids.fog
 
     def on_keyboard(self, window, keycode, scancode, text, modifiers):
         k = key(keycode, modifiers)
@@ -48,11 +61,6 @@ class DMApp(App):
         elif k == 'ctrl+S':
             # sync
             self.do_sync()
-
-
-    @property
-    def fog(self):
-        return self.root.ids.fog
 
     def do_sync(self):
         import requests

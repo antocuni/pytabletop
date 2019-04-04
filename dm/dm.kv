@@ -22,67 +22,68 @@
     state: "down" if app.tool == self.tool else "normal"
     on_release: app.tool = self.tool
 
-FloatLayout:
+<MapScreen>:
+    FloatLayout:
 
-    FogOfWar:
-        id: fog
-        source: app.mapfile
-        dm: True
-        #border_color: (1, 1, 0, 1)
+        FogOfWar:
+            id: fog
+            source: app.mapfile
+            dm: True
+            #border_color: (1, 1, 0, 1)
 
-    # toolbar
-    BoxLayout:
-        right: root.right
-        orientation: 'vertical'
-        size_hint_x: None
-        width: 100
+        # toolbar
+        BoxLayout:
+            right: root.right
+            orientation: 'vertical'
+            size_hint_x: None
+            width: 100
 
-        Label:
-            text: app.server
-            size_hint_y: None
-            height: 50
+            Label:
+                text: app.server
+                size_hint_y: None
+                height: 50
 
-        TextInput:
-            hint_text: "Custom notes"
+            TextInput:
+                hint_text: "Custom notes"
 
-        Label:
-            text: ""
-            size_hint_y: None
-            height: 20
+            Label:
+                text: ""
+                size_hint_y: None
+                height: 20
 
-        ToolButton:
-            text: "Move"
-            tool: "move"
+            ToolButton:
+                text: "Move"
+                tool: "move"
 
-        ToolButton:
-            text: "Rect"
-            tool: "rect"
+            ToolButton:
+                text: "Rect"
+                tool: "rect"
 
-        Label:
-            text: ""
-            size_hint_y: None
-            height: 20
+            Label:
+                text: ""
+                size_hint_y: None
+                height: 20
 
-        Button:
-            text: "Sync"
-            size_hint_y: None
-            height: 50
-            on_release: app.do_sync()
+            Button:
+                text: "Sync"
+                size_hint_y: None
+                height: 50
+                on_release: app.do_sync()
 
-        Button:
-            text: "Rotate: +90"
-            size_hint_y: None
-            height: 50
-            on_release: app.adjust_rotation()
+            Button:
+                text: "Rotate: +90"
+                size_hint_y: None
+                height: 50
+                on_release: app.adjust_rotation()
 
-        Button:
-            text: "Send Map"
-            size_hint_y: None
-            height: 50
-            on_release: app.do_send_map()
+            Button:
+                text: "Send Map"
+                size_hint_y: None
+                height: 50
+                on_release: app.do_send_map()
 
-        Button:
-            text: "Quit"
-            size_hint_y: None
-            height: 50
-            on_release: app.stop()
+            Button:
+                text: "Quit"
+                size_hint_y: None
+                height: 50
+                on_release: app.stop()
