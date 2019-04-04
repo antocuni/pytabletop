@@ -22,6 +22,26 @@
     state: "down" if app.tool == self.tool else "normal"
     on_release: app.tool = self.tool
 
+<PasteImageScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Image:
+            texture: root.texture
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 50
+                
+            Button:
+                text: "Send"
+                on_release: root.do_send(app)
+
+            Button:
+                text: "Close"
+                on_release: app.root.go_back()
+
 <MapScreen>:
     FloatLayout:
 
@@ -87,3 +107,5 @@
                 size_hint_y: None
                 height: 50
                 on_release: app.stop()
+
+

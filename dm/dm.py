@@ -12,6 +12,7 @@ from kivy.uix.screenmanager import Screen
 from fogofwar import RevealRectangle
 from tools import Tool, RectangleTool
 from manager import Manager
+from pasteimage import PasteImageScreen, CLIPBOARD
 
 class MapScreen(Screen):
     pass
@@ -53,6 +54,9 @@ class DMApp(App):
         return self.mapscreen.ids.fog
 
     def on_keyboard(self, window, keycode, scancode, text, modifiers):
+        if keycode == 27: # ESC
+            return self.root.go_back()
+        #
         k = key(keycode, modifiers)
         if k == ' ':
             self.tool = 'move'
@@ -61,6 +65,14 @@ class DMApp(App):
         elif k == 'ctrl+S':
             # sync
             self.do_sync()
+        elif k == 'ctrl+V':
+            png_data = CLIPBOARD.get_png()
+            if png_data is None:
+                print 'No image in the clipboard'
+            else:
+                screen = PasteImageScreen(name="paste", png_data=png_data)
+                self.root.open(screen)
+
 
     def do_sync(self):
         import requests
@@ -76,6 +88,13 @@ class DMApp(App):
             resp = requests.post(url, files={'image': f})
             print resp
             print resp.text
+
+    def send_image(self, stream):
+        import requests
+        url = self.url('/show_image/')
+        resp = requests.post(url, files={'image': stream})
+        print resp
+        print resp.text
 
     def on_tool(self, _, tool):
         self.fog.locked = (tool != 'move')

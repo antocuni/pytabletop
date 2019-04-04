@@ -51,7 +51,7 @@ def upload_image():
         if request.path == '/load_map/':
             call_mainthread(kivy_app.load_map, image_data)
             return flask.jsonify(result='OK')
-        elif request.path == '/show_image':
+        elif request.path == '/show_image/':
             call_mainthread(kivy_app.show_image, image_data)
             return flask.jsonify(result='OK')
         else:
