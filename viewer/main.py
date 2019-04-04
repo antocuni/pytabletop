@@ -18,7 +18,7 @@ from manager import Manager
 from getip import getIP
 
 class MapScreen(Screen):
-    pass
+    map_texture = ObjectProperty(None)
 
 class ImageScreen(Screen):
     image_texture = ObjectProperty(None)
@@ -51,6 +51,11 @@ class ViewerApp(App):
 
     def reveal(self, d):
         self.mapscreen.ids.fog.set_json_areas(d)
+
+    def load_map(self, data):
+        stream = io.BytesIO(data)
+        img = CoreImage(stream, ext="png")
+        self.mapscreen.map_texture = img.texture
 
     def show_image(self, data):
         stream = io.BytesIO(data)

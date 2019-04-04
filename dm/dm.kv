@@ -76,6 +76,12 @@ FloatLayout:
             on_release: app.adjust_rotation()
 
         Button:
+            text: "Send Map"
+            size_hint_y: None
+            height: 50
+            on_release: app.do_send_map()
+
+        Button:
             text: "Quit"
             size_hint_y: None
             height: 50

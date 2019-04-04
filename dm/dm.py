@@ -4,6 +4,7 @@ import kivy
 kivy.require('1.9.0')
 
 import sys
+from urlparse import urljoin
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
@@ -25,13 +26,15 @@ def key(keycode, modifiers):
 class DMApp(App):
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
+    port = StringProperty('5000')
     tool = StringProperty("move")
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
 
-    def reveal_url(self):
-        return 'http://%s:5000/reveal/' % (self.server)
+    def url(self, path):
+        base = 'http://%s:%s' % (self.server, self.port)
+        return urljoin(base, path)
 
     def on_pause(self):
         return True
@@ -54,9 +57,17 @@ class DMApp(App):
     def do_sync(self):
         import requests
         areas = self.fog.get_json_areas()
-        resp = requests.post(self.reveal_url(), json=areas)
+        resp = requests.post(self.url('/reveal/'), json=areas)
         print resp
         print resp.text
+
+    def do_send_map(self):
+        import requests
+        with open(self.mapfile, 'rb') as f:
+            url = self.url('/load_map/')
+            resp = requests.post(url, files={'image': f})
+            print resp
+            print resp.text
 
     def on_tool(self, _, tool):
         self.fog.locked = (tool != 'move')
@@ -72,6 +83,7 @@ class DMApp(App):
         if rot % 90 != 0:
             self.fog.rotation = int(rot % 90) * 90
         self.fog.rotation += 90
+
 
 
 if __name__ == '__main__':

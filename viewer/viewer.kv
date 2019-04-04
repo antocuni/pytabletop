@@ -25,13 +25,19 @@
 
         FogOfWar:
             id: fog
-            source: "map.png"
+            texture: root.map_texture
             dm: False
             #border_color: (1, 1, 0, 1)
 
             do_rotation: True
             do_translation: True
             do_scale: True
+
+            Label:
+                text: "No map loaded"
+                font_size: '50sp'
+                color: (1, 0, 0, 1) if root.ids.fog.texture is None else (0, 0, 0, 0)
+
 
 
 <ImageScreen>:

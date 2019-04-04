@@ -32,6 +32,42 @@ def reveal():
     current_app.server.kivy_app.reveal(reveal_dict)
     return flask.jsonify(result='OK')
 
+@tabletop.route('/load_map/', methods=['GET', 'POST'])
+@tabletop.route('/show_image/', methods=['GET', 'POST'])
+def upload_image():
+    request = flask.request
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'image' not in request.files:
+            return error("no image part")
+        image = request.files['image']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if image.filename == '':
+            return error("empty file")
+        image_data = image.stream.read()
+
+        kivy_app = current_app.server.kivy_app
+        if request.path == '/load_map/':
+            call_mainthread(kivy_app.load_map, image_data)
+            return flask.jsonify(result='OK')
+        elif request.path == '/show_image':
+            call_mainthread(kivy_app.show_image, image_data)
+            return flask.jsonify(result='OK')
+        else:
+            return error('Invalid path: %s' % request.path)
+
+    return '''
+    <!doctype html>
+    <title>Show Image or Load Map</title>
+    <h1>Show Image or Load Map</h1>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+
 @tabletop.route('/show_image/', methods=['GET', 'POST'])
 def show_image():
     request = flask.request

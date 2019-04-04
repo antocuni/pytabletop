@@ -16,6 +16,7 @@ Builder.load_string("""
     Image:
         id: map
         source: root.source
+        texture: root.texture
         pos: 0, 0
         size: self.texture.size if self.texture else (100, 100)
         size_hint: None, None
@@ -94,6 +95,7 @@ class MyScatterPlaneLayout(ScatterLayout):
 class FogOfWar(MyScatterPlaneLayout):
     dm = BooleanProperty(False)
     source = ObjectProperty()
+    texture = ObjectProperty()
     tool = ObjectProperty(Tool())
 
     def clear(self):
