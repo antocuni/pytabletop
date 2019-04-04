@@ -11,6 +11,16 @@ from kivy.uix.togglebutton import ToggleButton
 from fogofwar import RevealRectangle
 from tools import Tool, RectangleTool
 
+def key(keycode, modifiers):
+    if keycode > 255:
+        return None # TODO
+    ch = chr(keycode).upper()
+    if modifiers:
+        parts = sorted(modifiers)
+        parts.append(ch)
+        return '+'.join(parts)
+    else:
+        return ch
 
 class DMApp(App):
     mapfile = StringProperty('')
@@ -26,8 +36,16 @@ class DMApp(App):
     def on_pause(self):
         return True
 
-    def on_keyboard(self, window, key, scancode, codepoint, modifier):
-        print 'got key', key
+    def on_keyboard(self, window, keycode, scancode, text, modifiers):
+        k = key(keycode, modifiers)
+        if k == ' ':
+            self.tool = 'move'
+        elif k == 'R':
+            self.tool = 'rect'
+        elif k == 'ctrl+S':
+            # sync
+            self.do_sync()
+
 
     @property
     def fog(self):
