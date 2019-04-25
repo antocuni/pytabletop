@@ -12,7 +12,7 @@ from kivy.uix.screenmanager import Screen
 from fogofwar import RevealRectangle
 from tools import Tool, RectangleTool
 from manager import Manager
-from pasteimage import PasteImageScreen, CLIPBOARD
+from pasteimage import PasteImageScreen, get_png_from_clipboard
 
 class MapScreen(Screen):
     pass
@@ -66,7 +66,7 @@ class DMApp(App):
             # sync
             self.do_sync()
         elif k == 'ctrl+V':
-            png_data = CLIPBOARD.get_png()
+            png_data = get_png_from_clipboard()
             if png_data is None:
                 print 'No image in the clipboard'
             else:

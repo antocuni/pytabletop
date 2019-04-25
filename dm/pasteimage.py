@@ -1,29 +1,22 @@
 import io
+import subprocess
+import errno
 from kivy.core.image import Image as CoreImage
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
-class Clipboard(object):
-    _scrap = None
-
-    @property
-    def scrap(self):
-        if self._scrap is None:
-            import pygame.scrap
-            pygame.scrap.init()
-            self._scrap = pygame.scrap
-        return self._scrap
-
-    def get_png(self):
-        data = self.scrap.get('image/png')
-        if data == '':
+def get_png_from_clipboard():
+    cmd = ['xxxclip', '-o', '-selection', 'clipboard', '-t', 'image/png']
+    try:
+        return subprocess.check_output(cmd)
+    except subprocess.CalledProcessError:
+        # most likely it means that we don't have an image in the clipboard
+        return None
+    except OSError as e:
+        if e.errno == errno.ENOENT:
+            print 'xclip: %s' % (e.strerror,)
             return None
-        ## with open('paste.png', 'wb') as f:
-        ##     f.write(data)
-        return data
-
-CLIPBOARD = Clipboard()
-
+        raise
 
 class PasteImageScreen(Screen):
     png_data = ObjectProperty(None)
