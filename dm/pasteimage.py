@@ -6,7 +6,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 def get_png_from_clipboard():
-    cmd = ['xxxclip', '-o', '-selection', 'clipboard', '-t', 'image/png']
+    cmd = ['xclip', '-o', '-selection', 'clipboard', '-t', 'image/png']
     try:
         return subprocess.check_output(cmd)
     except subprocess.CalledProcessError:
