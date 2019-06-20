@@ -27,6 +27,15 @@ class DMScreen(Screen):
         base = 'http://%s:%s' % (self.server, self.port)
         return urljoin(base, path)
 
+    def select_tool(self, tool):
+        self.fog.locked = (tool != 'move')
+        if tool == 'move':
+            self.fog.tool = Tool()
+        elif tool == 'rect':
+            self.fog.tool = RectangleTool()
+        else:
+            print 'Unknown tool: %s' % tool
+
     def cmd_send_map(self):
         import requests
         with open(self.mapfile, 'rb') as f:
@@ -70,23 +79,20 @@ def key(keycode, modifiers):
 class DMApp(App):
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
+
+    # this should belong to DMScreen, but I didn't manage to find a way to
+    # make it working in the mess of kivy properties :(
     tool = StringProperty("move")
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile,
-                                 server=self.server)
+        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile, server=self.server)
         manager = Manager()
         manager.open(self.dmscreen)
         return manager
 
     def on_pause(self):
         return True
-
-    # kill this eventually
-    @property
-    def fog(self):
-        return self.dmscreen.ids.fog
 
     def on_keyboard(self, window, keycode, scancode, text, modifiers):
         if keycode == 27: # ESC
@@ -113,14 +119,8 @@ class DMApp(App):
                 self.root.open(screen)
 
     def on_tool(self, _, tool):
-        self.fog.locked = (tool != 'move')
-        if tool == 'move':
-            self.fog.tool = Tool()
-        elif tool == 'rect':
-            self.fog.tool = RectangleTool()
-        else:
-            print 'Unknown tool: %s' % tool
-
+        if self.dmscreen:
+            self.dmscreen.select_tool(tool)
 
 
 
