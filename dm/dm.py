@@ -27,7 +27,7 @@ class DMScreen(Screen):
         base = 'http://%s:%s' % (self.server, self.port)
         return urljoin(base, path)
 
-    def do_send_map(self):
+    def cmd_send_map(self):
         import requests
         with open(self.mapfile, 'rb') as f:
             url = self.url('/load_map/')
@@ -35,12 +35,18 @@ class DMScreen(Screen):
             print resp
             print resp.text
 
-    def do_sync(self):
+    def cmd_sync(self):
         import requests
         areas = self.fog.get_json_areas()
         resp = requests.post(self.url('/reveal/'), json=areas)
         print resp
         print resp.text
+
+    def cmd_adjust_rotation(self):
+        rot = self.fog.rotation
+        if rot % 90 != 0:
+            self.fog.rotation = int(rot % 90) * 90
+        self.fog.rotation += 90
 
     def send_image(self, stream):
         import requests
@@ -73,7 +79,6 @@ class DMApp(App):
         manager = Manager()
         manager.open(self.dmscreen)
         return manager
-
 
     def on_pause(self):
         return True
@@ -112,11 +117,6 @@ class DMApp(App):
         else:
             print 'Unknown tool: %s' % tool
 
-    def adjust_rotation(self):
-        rot = self.fog.rotation
-        if rot % 90 != 0:
-            self.fog.rotation = int(rot % 90) * 90
-        self.fog.rotation += 90
 
 
 
