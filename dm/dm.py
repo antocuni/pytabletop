@@ -27,6 +27,24 @@ class DMScreen(Screen):
         base = 'http://%s:%s' % (self.server, self.port)
         return urljoin(base, path)
 
+    def on_key_press(self, app, k):
+        if k == ' ':
+            app.tool = 'move'
+        elif k == 'R':
+            app.tool = 'rect'
+        elif k == 'ctrl+S':
+            # sync
+            self.cmd_sync()
+        elif k == 'ctrl+V':
+            png_data = get_png_from_clipboard()
+            if png_data is None:
+                print 'No image in the clipboard'
+            else:
+                screen = PasteImageScreen(name="paste",
+                                          dm=self,
+                                          png_data=png_data)
+                app.root.open(screen)
+
     def select_tool(self, tool):
         self.fog.locked = (tool != 'move')
         if tool == 'move':
@@ -99,24 +117,7 @@ class DMApp(App):
             return self.root.go_back()
         #
         k = key(keycode, modifiers)
-        self.root.on_key_press(k)
-        # XXX move this to DMScreen eventually
-        if k == ' ':
-            self.tool = 'move'
-        elif k == 'R':
-            self.tool = 'rect'
-        elif k == 'ctrl+S':
-            # sync
-            self.do_sync()
-        elif k == 'ctrl+V':
-            png_data = get_png_from_clipboard()
-            if png_data is None:
-                print 'No image in the clipboard'
-            else:
-                screen = PasteImageScreen(name="paste",
-                                          dm=self.dmscreen,
-                                          png_data=png_data)
-                self.root.open(screen)
+        self.root.on_key_press(self, k)
 
     def on_tool(self, _, tool):
         if self.dmscreen:
