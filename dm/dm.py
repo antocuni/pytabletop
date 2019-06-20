@@ -15,7 +15,39 @@ from manager import Manager
 from pasteimage import PasteImageScreen, get_png_from_clipboard
 
 class DMScreen(Screen):
-    pass
+    mapfile = StringProperty('')
+    server = StringProperty('127.0.0.1')
+    port = StringProperty('5000')
+
+    @property
+    def fog(self):
+        return self.ids.fog
+
+    def url(self, path):
+        base = 'http://%s:%s' % (self.server, self.port)
+        return urljoin(base, path)
+
+    def do_send_map(self):
+        import requests
+        with open(self.mapfile, 'rb') as f:
+            url = self.url('/load_map/')
+            resp = requests.post(url, files={'image': f})
+            print resp
+            print resp.text
+
+    def do_sync(self):
+        import requests
+        areas = self.fog.get_json_areas()
+        resp = requests.post(self.url('/reveal/'), json=areas)
+        print resp
+        print resp.text
+
+    def send_image(self, stream):
+        import requests
+        url = self.url('/show_image/')
+        resp = requests.post(url, files={'image': stream})
+        print resp
+        print resp.text
 
 
 def key(keycode, modifiers):
@@ -32,23 +64,21 @@ def key(keycode, modifiers):
 class DMApp(App):
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
-    port = StringProperty('5000')
     tool = StringProperty("move")
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.dmscreen = DMScreen(name='dm')
+        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile,
+                                 server=self.server)
         manager = Manager()
         manager.open(self.dmscreen)
         return manager
 
-    def url(self, path):
-        base = 'http://%s:%s' % (self.server, self.port)
-        return urljoin(base, path)
 
     def on_pause(self):
         return True
 
+    # kill this eventually
     @property
     def fog(self):
         return self.dmscreen.ids.fog
@@ -72,29 +102,6 @@ class DMApp(App):
             else:
                 screen = PasteImageScreen(name="paste", png_data=png_data)
                 self.root.open(screen)
-
-
-    def do_sync(self):
-        import requests
-        areas = self.fog.get_json_areas()
-        resp = requests.post(self.url('/reveal/'), json=areas)
-        print resp
-        print resp.text
-
-    def do_send_map(self):
-        import requests
-        with open(self.mapfile, 'rb') as f:
-            url = self.url('/load_map/')
-            resp = requests.post(url, files={'image': f})
-            print resp
-            print resp.text
-
-    def send_image(self, stream):
-        import requests
-        url = self.url('/show_image/')
-        resp = requests.post(url, files={'image': stream})
-        print resp
-        print resp.text
 
     def on_tool(self, _, tool):
         self.fog.locked = (tool != 'move')

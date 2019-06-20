@@ -47,7 +47,7 @@
 
         FogOfWar:
             id: fog
-            source: app.mapfile
+            source: root.mapfile
             dm: True
             #border_color: (1, 1, 0, 1)
 
@@ -88,7 +88,7 @@
                 text: "Sync"
                 size_hint_y: None
                 height: 50
-                on_release: app.do_sync()
+                on_release: root.do_sync()
 
             Button:
                 text: "Rotate: +90"
@@ -100,12 +100,12 @@
                 text: "Send Map"
                 size_hint_y: None
                 height: 50
-                on_release: app.do_send_map()
+                on_release: root.do_send_map()
 
             Button:
                 text: "Quit"
                 size_hint_y: None
                 height: 50
-                on_release: app.stop()
+                on_release: self.stop()
 
 
