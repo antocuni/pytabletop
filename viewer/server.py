@@ -29,7 +29,7 @@ def reveal():
         return error('Expected JSON request', 400)
     #
     current_app.logger.info('\nReveal: %s' % reveal_dict)
-    current_app.server.kivy_app.reveal(reveal_dict)
+    current_app.server.player_screen.reveal(reveal_dict)
     return flask.jsonify(result='OK')
 
 @tabletop.route('/load_map/', methods=['GET', 'POST'])
@@ -47,12 +47,12 @@ def upload_image():
             return error("empty file")
         image_data = image.stream.read()
 
-        kivy_app = current_app.server.kivy_app
+        player_screen = current_app.server.player_screen
         if request.path == '/load_map/':
-            call_mainthread(kivy_app.load_map, image_data)
+            call_mainthread(player_screen.load_map, image_data)
             return flask.jsonify(result='OK')
         elif request.path == '/show_image/':
-            call_mainthread(kivy_app.show_image, image_data)
+            call_mainthread(player_screen.show_image, image_data)
             return flask.jsonify(result='OK')
         else:
             return error('Invalid path: %s' % request.path)
@@ -74,7 +74,7 @@ class ViewerServer(EventDispatcher):
     thread = None
     map_name = StringProperty()
     count = NumericProperty(0)
-    kivy_app = ObjectProperty()
+    player_screen = ObjectProperty()
 
     def create_app(self):
         self.app = flask.Flask('tabletop_viewer')

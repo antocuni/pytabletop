@@ -19,6 +19,25 @@ from getip import getIP
 
 class PlayerScreen(Screen):
     map_texture = ObjectProperty(None)
+    server = ObjectProperty()
+
+    def start_server(self):
+        self.server = ViewerServer(player_screen=self)
+        self.server.start()
+
+    def reveal(self, d):
+        self.ids.fog.set_json_areas(d)
+
+    def load_map(self, data):
+        stream = io.BytesIO(data)
+        img = CoreImage(stream, ext="png")
+        self.map_texture = img.texture
+
+    def show_image(self, data):
+        stream = io.BytesIO(data)
+        img = CoreImage(stream, ext="png")
+        self.manager.open(ImageScreen(image_texture=img.texture, name='img'))
+
 
 class ImageScreen(Screen):
     image_texture = ObjectProperty(None)
@@ -30,13 +49,12 @@ class ViewerApp(App):
 
     def __init__(self, *args, **kwargs):
         super(ViewerApp, self).__init__(*args, **kwargs)
-        self.server = ViewerServer(kivy_app=self)
-        self.server.start()
         self.IPAddress = getIP()
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
         self.playerscreen = PlayerScreen(name='player')
+        self.playerscreen.start_server()
         manager = Manager()
         manager.open(self.playerscreen)
         return manager
@@ -49,18 +67,6 @@ class ViewerApp(App):
             return self.root.go_back()
         return False
 
-    def reveal(self, d):
-        self.playerscreen.ids.fog.set_json_areas(d)
-
-    def load_map(self, data):
-        stream = io.BytesIO(data)
-        img = CoreImage(stream, ext="png")
-        self.playerscreen.map_texture = img.texture
-
-    def show_image(self, data):
-        stream = io.BytesIO(data)
-        img = CoreImage(stream, ext="png")
-        self.root.open(ImageScreen(image_texture=img.texture, name='img'))
 
 if __name__ == '__main__':
     ViewerApp().run()
