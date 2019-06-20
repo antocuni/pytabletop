@@ -70,7 +70,7 @@ def upload_image():
 
 ###########################################
 
-class ViewerServer(EventDispatcher):
+class PlayerServer(EventDispatcher):
     thread = None
     map_name = StringProperty()
     count = NumericProperty(0)
@@ -90,12 +90,12 @@ class ViewerServer(EventDispatcher):
         app.run(host='0.0.0.0', debug=False)
 
     def start(self):
-        self.thread = threading.Thread(target=self._run, name='ViewerServer')
+        self.thread = threading.Thread(target=self._run, name='PlayerServer')
         self.thread.daemon = True
         self.thread.start()
 
 
 if __name__ == '__main__':
-    serv = ViewerServer()
+    serv = PlayerServer()
     serv._run()
 

@@ -12,7 +12,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 from kivy.core.image import Image as CoreImage
-from server import ViewerServer
+from server import PlayerServer
 from fogofwar import RevealRectangle
 from manager import Manager
 from getip import getIP
@@ -22,7 +22,7 @@ class PlayerScreen(Screen):
     server = ObjectProperty()
 
     def start_server(self):
-        self.server = ViewerServer(player_screen=self)
+        self.server = PlayerServer(player_screen=self)
         self.server.start()
 
     def reveal(self, d):
