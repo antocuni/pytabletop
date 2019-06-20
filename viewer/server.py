@@ -68,34 +68,6 @@ def upload_image():
     '''
 
 
-@tabletop.route('/show_image/', methods=['GET', 'POST'])
-def show_image():
-    request = flask.request
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'image' not in request.files:
-            return error("no image part")
-        image = request.files['image']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if image.filename == '':
-            return error("empty file")
-
-        if file:
-            image_data = image.stream.read()
-            call_mainthread(current_app.server.kivy_app.show_image,
-                            image_data)
-            return flask.jsonify(result='OK')
-    return '''
-    <!doctype html>
-    <title>Show Image</title>
-    <h1>Show Image</h1>
-    <form method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
-
 ###########################################
 
 class ViewerServer(EventDispatcher):
