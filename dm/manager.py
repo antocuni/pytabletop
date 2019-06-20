@@ -57,3 +57,7 @@ class Manager(ScreenManager):
     @property
     def current_view(self):
         return self.history[-1]
+
+    def on_key_press(self, k):
+        if hasattr(self.current_view, 'on_key_press'):
+            self.current_view.on_key_press(k)

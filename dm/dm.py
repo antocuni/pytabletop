@@ -93,6 +93,8 @@ class DMApp(App):
             return self.root.go_back()
         #
         k = key(keycode, modifiers)
+        self.root.on_key_press(k)
+        # XXX move this to DMScreen eventually
         if k == ' ':
             self.tool = 'move'
         elif k == 'R':
