@@ -105,7 +105,9 @@ class DMApp(App):
             if png_data is None:
                 print 'No image in the clipboard'
             else:
-                screen = PasteImageScreen(name="paste", png_data=png_data)
+                screen = PasteImageScreen(name="paste",
+                                          dm=self.dmscreen,
+                                          png_data=png_data)
                 self.root.open(screen)
 
     def on_tool(self, _, tool):

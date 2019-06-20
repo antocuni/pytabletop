@@ -19,6 +19,7 @@ def get_png_from_clipboard():
         raise
 
 class PasteImageScreen(Screen):
+    dm = ObjectProperty(None)
     png_data = ObjectProperty(None)
     texture = ObjectProperty(None)
 
@@ -30,5 +31,5 @@ class PasteImageScreen(Screen):
 
     def do_send(self, app):
         stream = io.BytesIO(self.png_data)
-        app.send_image(stream)
+        self.dm.send_image(stream)
         app.root.go_back()
