@@ -53,10 +53,10 @@ class ViewerApp(App):
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.playerscreen = PlayerScreen(name='player')
-        self.playerscreen.start_server()
+        self.player_screen = PlayerScreen(name='player')
+        self.player_screen.start_server()
         manager = Manager()
-        manager.open(self.playerscreen)
+        manager.open(self.player_screen)
         return manager
 
     def on_pause(self):
