@@ -15,7 +15,8 @@ def reveal():
 
 
 def show_image():
-    url = 'http://127.0.0.1:5000/show_image/'
+    #url = 'http://127.0.0.1:5000/show_image/'
+    url = 'http://192.168.1.115:5000/show_image/'
     files = {'image': open(sys.argv[1],'rb')}
     resp = requests.post(url, files=files)
     print resp

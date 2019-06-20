@@ -14,7 +14,7 @@ from tools import Tool, RectangleTool
 from manager import Manager
 from pasteimage import PasteImageScreen, get_png_from_clipboard
 
-class MapScreen(Screen):
+class DMScreen(Screen):
     pass
 
 
@@ -37,9 +37,9 @@ class DMApp(App):
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.mapscreen = MapScreen(name='map')
+        self.dmscreen = DMScreen(name='dm')
         manager = Manager()
-        manager.open(self.mapscreen)
+        manager.open(self.dmscreen)
         return manager
 
     def url(self, path):
@@ -51,7 +51,7 @@ class DMApp(App):
 
     @property
     def fog(self):
-        return self.mapscreen.ids.fog
+        return self.dmscreen.ids.fog
 
     def on_keyboard(self, window, keycode, scancode, text, modifiers):
         if keycode == 27: # ESC
