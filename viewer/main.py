@@ -17,7 +17,7 @@ from fogofwar import RevealRectangle
 from manager import Manager
 from getip import getIP
 
-class MapScreen(Screen):
+class PlayerScreen(Screen):
     map_texture = ObjectProperty(None)
 
 class ImageScreen(Screen):
@@ -36,9 +36,9 @@ class ViewerApp(App):
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.mapscreen = MapScreen(name='map')
+        self.playerscreen = PlayerScreen(name='player')
         manager = Manager()
-        manager.open(self.mapscreen)
+        manager.open(self.playerscreen)
         return manager
 
     def on_pause(self):
@@ -50,12 +50,12 @@ class ViewerApp(App):
         return False
 
     def reveal(self, d):
-        self.mapscreen.ids.fog.set_json_areas(d)
+        self.playerscreen.ids.fog.set_json_areas(d)
 
     def load_map(self, data):
         stream = io.BytesIO(data)
         img = CoreImage(stream, ext="png")
-        self.mapscreen.map_texture = img.texture
+        self.playerscreen.map_texture = img.texture
 
     def show_image(self, data):
         stream = io.BytesIO(data)
