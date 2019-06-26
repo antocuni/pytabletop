@@ -10,6 +10,8 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 from pytt.manager import Manager
 from pytt.dmscreen import DMScreen
+from pytt.player_screen import PlayerScreen
+from pytt.getip import getIP
 
 class MainMenuScreen(Screen):
     pass
@@ -29,6 +31,7 @@ class PyTTApp(App):
     dmscreen = None
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
+    IPAddress = StringProperty(getIP())
 
     # this should belong to DMScreen, but I didn't manage to find a way to
     # make it working in the mess of kivy properties :(
@@ -61,6 +64,9 @@ class PyTTApp(App):
     def open_dmscreen(self):
         self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile, server=self.server)
         self.manager.open(self.dmscreen)
+
+    def open_playerscreen(self):
+        self.manager.open(PlayerScreen())
 
 
 def main():

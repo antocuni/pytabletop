@@ -2,9 +2,9 @@ import io
 from kivy.uix.screenmanager import Screen
 from kivy.core.image import Image as CoreImage
 from kivy.properties import StringProperty, ObjectProperty
-from server import PlayerServer
+from pytt.player_server import PlayerServer
 
-class ImageScreen(Screen):
+class ShowImageScreen(Screen):
     image_texture = ObjectProperty(None)
 
 
@@ -27,5 +27,5 @@ class PlayerScreen(Screen):
     def show_image(self, data):
         stream = io.BytesIO(data)
         img = CoreImage(stream, ext="png")
-        self.manager.open(ImageScreen(image_texture=img.texture, name='img'))
+        self.manager.open(ShowImageScreen(image_texture=img.texture, name='img'))
 

@@ -23,6 +23,7 @@
             on_release: app.open_dmscreen()
         Button:
             text: "Player"
+            on_release: app.open_playerscreen()
 
 
 <ToolButton@ToggleButton>:
@@ -31,6 +32,7 @@
     height: 50
     state: "down" if app.tool == self.tool else "normal"
     on_release: app.tool = self.tool
+
 
 <PasteImageScreen>:
     BoxLayout:
@@ -51,6 +53,22 @@
             Button:
                 text: "Close"
                 on_release: app.root.go_back()
+
+
+<ShowImageScreen>:
+    FloatLayout:
+        ScatterLayout:
+            auto_bring_to_front: False
+            Image:
+                texture: root.image_texture
+
+        Button:
+            size_hint: None, None
+            pos_hint: {'right': 1, 'top': 1}
+            size: 50, 50
+            text: "Close"
+            on_release: app.root.go_back()
+
 
 <DMScreen>:
     FloatLayout:
@@ -117,5 +135,30 @@
                 size_hint_y: None
                 height: 50
                 on_release: app.stop()
+
+
+<PlayerScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: 50
+            text: "Map Viewer: %s" % app.IPAddress
+
+        FogOfWar:
+            id: fog
+            texture: root.map_texture
+            dm: False
+            #border_color: (1, 1, 0, 1)
+
+            do_rotation: True
+            do_translation: True
+            do_scale: True
+
+            Label:
+                text: "No map loaded"
+                font_size: '50sp'
+                color: (1, 0, 0, 1) if root.ids.fog.texture is None else (0, 0, 0, 0)
+
 
 
