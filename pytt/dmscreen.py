@@ -1,8 +1,8 @@
 from urlparse import urljoin
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
-from tools import Tool, RectangleTool
-from pasteimage import PasteImageScreen, get_png_from_clipboard
+from pytt.tools import Tool, RectangleTool
+from pytt.pasteimage import PasteImageScreen, get_png_from_clipboard
 
 class DMScreen(Screen):
     mapfile = StringProperty('')

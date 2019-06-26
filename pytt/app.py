@@ -7,8 +7,8 @@ import sys
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
-from manager import Manager
-from dmscreen import DMScreen
+from pytt.manager import Manager
+from pytt.dmscreen import DMScreen
 
 def key(keycode, modifiers):
     if keycode > 255:
@@ -51,8 +51,7 @@ class DMApp(App):
             self.dmscreen.select_tool(tool)
 
 
-
-if __name__ == '__main__':
+def main():
     n = len(sys.argv)
     if n == 2:
         mapfile = sys.argv[1]

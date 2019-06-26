@@ -1,5 +1,5 @@
 from kivy.event import EventDispatcher
-from fogofwar import Tool, RevealRectangle
+from pytt.fogofwar import Tool, RevealRectangle
 
 def bounding_rect(pos1, pos2):
     if pos1 is None or pos2 is None:
