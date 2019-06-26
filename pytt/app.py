@@ -7,8 +7,12 @@ import sys
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
+from kivy.uix.screenmanager import Screen
 from pytt.manager import Manager
 from pytt.dmscreen import DMScreen
+
+class MainMenuScreen(Screen):
+    pass
 
 def key(keycode, modifiers):
     if keycode > 255:
@@ -22,6 +26,7 @@ def key(keycode, modifiers):
         return ch
 
 class PyTTApp(App):
+    dmscreen = None
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
 
@@ -31,10 +36,9 @@ class PyTTApp(App):
 
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile, server=self.server)
-        manager = Manager()
-        manager.open(self.dmscreen)
-        return manager
+        self.manager = Manager()
+        self.manager.open(MainMenuScreen())
+        return self.manager
 
     def on_pause(self):
         return True
@@ -42,13 +46,16 @@ class PyTTApp(App):
     def on_keyboard(self, window, keycode, scancode, text, modifiers):
         if keycode == 27: # ESC
             return self.root.go_back()
-        #
         k = key(keycode, modifiers)
         self.root.on_key_press(self, k)
 
     def on_tool(self, _, tool):
         if self.dmscreen:
             self.dmscreen.select_tool(tool)
+
+    def open_dmscreen(self):
+        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile, server=self.server)
+        self.manager.open(self.dmscreen)
 
 
 def main():

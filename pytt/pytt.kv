@@ -15,6 +15,16 @@
             dash_offset: 5
             dash_length: 3
 
+<MainMenuScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: "DM"
+            on_release: app.open_dmscreen()
+        Button:
+            text: "Player"
+
+
 <ToolButton@ToggleButton>:
     tool: ""
     size_hint_y: None
