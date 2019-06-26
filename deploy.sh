@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TMPDIR=/tmp/adbpush/viewer
+TMPDIR=/tmp/adbpush/pytt
 
 mkdir -p $TMPDIR
 cp -L -r * $TMPDIR
