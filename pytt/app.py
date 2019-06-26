@@ -28,20 +28,22 @@ def key(keycode, modifiers):
         return ch
 
 class PyTTApp(App):
-    dmscreen = None
-    player_screen = None
-    mapfile = StringProperty('')
-    server = StringProperty('127.0.0.1')
     IPAddress = StringProperty(getIP())
-
     # this should belong to DMScreen, but I didn't manage to find a way to
     # make it working in the mess of kivy properties :(
     tool = StringProperty("move")
 
+    def __init__(self, mapfile, server, **kwargs):
+        super(PyTTApp, self).__init__(**kwargs)
+        self.default_mapfile = mapfile
+        self.default_server = server
+        self.dmscreen = None
+        self.player_screen = None
+
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
         self.manager = Manager()
-        if self.mapfile:
+        if self.default_mapfile:
             # we passed a mapfile from the command line: start directly the DM screen
             self.open_dmscreen()
         else:
@@ -64,8 +66,9 @@ class PyTTApp(App):
 
     def open_dmscreen(self):
         if self.dmscreen is None:
-            self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile,
-                                     server=self.server)
+            self.dmscreen = DMScreen(name='dm',
+                                     mapfile=self.default_mapfile,
+                                     server=self.default_server)
         self.manager.open(self.dmscreen)
 
     def open_playerscreen(self):
