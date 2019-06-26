@@ -21,7 +21,7 @@ def key(keycode, modifiers):
     else:
         return ch
 
-class DMApp(App):
+class PyTTApp(App):
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
 
@@ -60,6 +60,6 @@ def main():
         mapfile = sys.argv[1]
         server = sys.argv[2]
     else:
-        print 'Usage: dm.py MAPFILE [SERVER]'
+        print 'Usage: main.py MAPFILE [SERVER]'
         sys.exit(1)
-    DMApp(mapfile=mapfile, server=server).run()
+    PyTTApp(mapfile=mapfile, server=server).run()
