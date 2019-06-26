@@ -87,9 +87,16 @@
             width: 100
 
             Label:
-                text: root.server
+                text: "Player App IP"
                 size_hint_y: None
-                height: 50
+                height: 20
+
+            TextInput:
+                text: root.server
+                on_text: root.server = self.text
+                size_hint_y: None
+                height: 30
+                multiline: False
 
             TextInput:
                 hint_text: "Custom notes"
