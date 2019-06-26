@@ -77,8 +77,8 @@
             id: fog
             source: root.mapfile
             dm: True
-            #border_color: (1, 1, 0, 1)
 
+            #border_color: (1, 1, 0, 1)
         # toolbar
         BoxLayout:
             right: root.right
@@ -97,6 +97,12 @@
                 size_hint_y: None
                 height: 30
                 multiline: False
+
+            Button:
+                text: "Load Map"
+                size_hint_y: None
+                height: 50
+                on_release: root.cmd_load_map()
 
             TextInput:
                 hint_text: "Custom notes"

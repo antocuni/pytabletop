@@ -44,6 +44,9 @@ class DMScreen(Screen):
         else:
             print 'Unknown tool: %s' % tool
 
+    def cmd_load_map(self):
+        print 'TODO'
+
     def cmd_send_map(self):
         import requests
         with open(self.mapfile, 'rb') as f:
