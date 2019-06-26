@@ -37,7 +37,12 @@ class PyTTApp(App):
     def build(self):
         Window.bind(on_keyboard=self.on_keyboard)
         self.manager = Manager()
-        self.manager.open(MainMenuScreen())
+        if self.mapfile:
+            # we passed a mapfile from the command line: start directly the DM screen
+            self.open_dmscreen()
+        else:
+            # no cmdline argument, open the menu
+            self.manager.open(MainMenuScreen())
         return self.manager
 
     def on_pause(self):
@@ -59,14 +64,12 @@ class PyTTApp(App):
 
 
 def main():
+    mapfile = ''
+    server = '127.0.0.1'
     n = len(sys.argv)
     if n == 2:
         mapfile = sys.argv[1]
-        server = '127.0.0.1'
     elif n == 3:
         mapfile = sys.argv[1]
         server = sys.argv[2]
-    else:
-        print 'Usage: main.py MAPFILE [SERVER]'
-        sys.exit(1)
     PyTTApp(mapfile=mapfile, server=server).run()
