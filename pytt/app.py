@@ -29,6 +29,7 @@ def key(keycode, modifiers):
 
 class PyTTApp(App):
     dmscreen = None
+    player_screen = None
     mapfile = StringProperty('')
     server = StringProperty('127.0.0.1')
     IPAddress = StringProperty(getIP())
@@ -62,11 +63,16 @@ class PyTTApp(App):
             self.dmscreen.select_tool(tool)
 
     def open_dmscreen(self):
-        self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile, server=self.server)
+        if self.dmscreen is None:
+            self.dmscreen = DMScreen(name='dm', mapfile=self.mapfile,
+                                     server=self.server)
         self.manager.open(self.dmscreen)
 
     def open_playerscreen(self):
-        self.manager.open(PlayerScreen())
+        if self.player_screen is None:
+            self.player_screen = PlayerScreen()
+            self.player_screen.start_server()
+        self.manager.open(self.player_screen)
 
 
 def main():
