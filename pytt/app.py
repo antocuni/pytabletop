@@ -37,7 +37,10 @@ class PyTTApp(App):
     def __init__(self, mapfile, server, **kwargs):
         super(PyTTApp, self).__init__(**kwargs)
         self.default_mapfile = mapfile
-        self.default_server = server
+        if server is None:
+            self.default_server = self.IPAddress
+        else:
+            self.default_server = server
         self.dmscreen = None
         self.player_screen = None
 
@@ -85,7 +88,7 @@ class PyTTApp(App):
 
 def main():
     mapfile = ''
-    server = '127.0.0.1'
+    server = None
     n = len(sys.argv)
     if n == 2:
         mapfile = sys.argv[1]
