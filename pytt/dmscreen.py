@@ -1,6 +1,7 @@
 from urlparse import urljoin
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
+from kivy.utils import platform
 from pytt.tools import Tool, RectangleTool
 from pytt.pasteimage import PasteImageScreen, get_png_from_clipboard
 
@@ -45,7 +46,15 @@ class DMScreen(Screen):
             print 'Unknown tool: %s' % tool
 
     def cmd_load_map(self):
-        print 'TODO'
+        from kivy.utils import platform
+        if platform == 'android':
+            from pytt.select_image import user_select_image
+            user_select_image(self.on_image_selected)
+        else:
+            print 'TODO: implement load_map on desktops'
+
+    def on_image_selected(self, filename):
+        self.mapfile = filename
 
     def cmd_send_map(self):
         import requests
