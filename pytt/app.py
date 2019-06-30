@@ -8,6 +8,7 @@ from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
+from kivy.utils import platform
 from pytt.manager import Manager
 from pytt.dmscreen import DMScreen
 from pytt.player_screen import PlayerScreen
@@ -41,7 +42,11 @@ class PyTTApp(App):
         self.player_screen = None
 
     def build(self):
-        Window.bind(on_keyboard=self.on_keyboard)
+        if platform != 'android':
+            # it seems that on android touch events also send a <space> key
+            # event, no idea why. Too bad, we don't really need keyboard
+            # shortcuts on android anyway, just disable them
+            Window.bind(on_keyboard=self.on_keyboard)
         self.manager = Manager()
         if self.default_mapfile:
             # we passed a mapfile from the command line: start directly the DM screen
