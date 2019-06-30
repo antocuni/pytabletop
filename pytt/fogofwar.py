@@ -32,6 +32,11 @@ Builder.load_string("""
                 pos: self.pos
                 size: self.size
 
+    Label:
+        text: "No map loaded"
+        font_size: '50sp'
+        color: (1, 0, 0, 1) if root.ids.map.texture is None else (0, 0, 0, 0)
+
 
 <RevealRectangle>:
     drag_distance: 0
