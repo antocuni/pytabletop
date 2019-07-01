@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import kivy
-kivy.require('1.9.0')
+kivy.require('1.9.1')
 
 import sys
 from zipfile import ZipFile
