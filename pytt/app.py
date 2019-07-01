@@ -4,17 +4,22 @@ import kivy
 kivy.require('1.9.0')
 
 import sys
+from zipfile import ZipFile
+from cStringIO import StringIO
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 from kivy.utils import platform
+from kivy.logger import Logger
 from pytt.manager import Manager
 from pytt.dmscreen import DMScreen
 from pytt.player_screen import PlayerScreen
 from pytt.getip import getIP
-from pytt.error import MyExceptionHandler
+from pytt.error import MyExceptionHandler, MessageBox
 from pytt.smart_requests import SmartRequests
+
+GITHUB_URL = 'https://github.com/antocuni/pytabletop/archive/master.zip'
 
 class MainMenuScreen(Screen):
     pass
@@ -95,6 +100,23 @@ class PyTTApp(App):
             self.player_screen = PlayerScreen()
             self.player_screen.start_server()
         self.manager.open(self.player_screen)
+
+    def upgrade_from_github(self):
+        if platform == 'android':
+            dest = '/sdcard/kivy'
+        else:
+            dest = '/tmp/kivy'
+        Logger.info('downloading zip from github')
+        resp = self.requests.get(GITHUB_URL)
+        Logger.info('unzipping to %s' % dest)
+        f = StringIO(resp.content)
+        zipf = ZipFile(f)
+        zipf.extractall(dest)
+        Logger.info('Upgrade done')
+        box = MessageBox(title='Upgrade',
+                         message='Upgrade completed',
+                         description='Restart the application')
+        box.open()
 
 
 def main():

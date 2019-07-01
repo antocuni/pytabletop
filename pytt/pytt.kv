@@ -19,11 +19,17 @@
     BoxLayout:
         orientation: 'vertical'
         Button:
-            text: "DM"
+            text: "DM Screen"
             on_release: app.open_dmscreen()
         Button:
-            text: "Player"
+            text: "Player Screen"
             on_release: app.open_playerscreen()
+        Button:
+            text: "Upgrade version"
+            on_release: app.upgrade_from_github()
+        Button:
+            text: "Quit"
+            on_release: app.stop()
 
 
 <ToolButton@ToggleButton>:
@@ -147,7 +153,7 @@
                 text: "Quit"
                 size_hint_y: None
                 height: 50
-                on_release: app.stop()
+                on_release: app.root.go_back()
 
 
 <PlayerScreen>:
