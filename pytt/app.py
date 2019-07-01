@@ -13,6 +13,8 @@ from pytt.manager import Manager
 from pytt.dmscreen import DMScreen
 from pytt.player_screen import PlayerScreen
 from pytt.getip import getIP
+from pytt.error import MyExceptionHandler
+from pytt.smart_requests import SmartRequests
 
 class MainMenuScreen(Screen):
     pass
@@ -34,6 +36,9 @@ class PyTTApp(App):
     # make it working in the mess of kivy properties :(
     tool = StringProperty("move")
 
+    font_size = 15.0
+    std_height = font_size * 2
+
     def __init__(self, mapfile, server, **kwargs):
         super(PyTTApp, self).__init__(**kwargs)
         self.default_mapfile = mapfile
@@ -44,15 +49,21 @@ class PyTTApp(App):
         self.dmscreen = None
         self.player_screen = None
 
+    def get_timeout(self):
+        return 3
+
     def build(self):
         if platform != 'android':
             # it seems that on android touch events also send a <space> key
             # event, no idea why. Too bad, we don't really need keyboard
             # shortcuts on android anyway, just disable them
             Window.bind(on_keyboard=self.on_keyboard)
+        self.exception_handler = MyExceptionHandler()
+        self.requests = SmartRequests(self)
         self.manager = Manager()
         if self.default_mapfile:
-            # we passed a mapfile from the command line: start directly the DM screen
+            # we passed a mapfile from the command line: start directly the DM
+            # screen
             self.open_dmscreen()
         else:
             # no cmdline argument, open the menu

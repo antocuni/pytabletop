@@ -129,7 +129,7 @@
                 text: "Sync"
                 size_hint_y: None
                 height: 50
-                on_release: root.cmd_sync()
+                on_release: root.cmd_sync(app)
 
             Button:
                 text: "Rotate: +90"
@@ -141,7 +141,7 @@
                 text: "Send Map"
                 size_hint_y: None
                 height: 50
-                on_release: root.cmd_send_map()
+                on_release: root.cmd_send_map(app)
 
             Button:
                 text: "Quit"

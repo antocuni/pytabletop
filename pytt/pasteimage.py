@@ -31,5 +31,5 @@ class PasteImageScreen(Screen):
 
     def do_send(self, app):
         stream = io.BytesIO(self.png_data)
-        self.dm.send_image(stream)
+        self.dm.send_image(app, stream)
         app.root.go_back()

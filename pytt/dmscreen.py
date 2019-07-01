@@ -56,18 +56,16 @@ class DMScreen(Screen):
     def on_image_selected(self, filename):
         self.mapfile = filename
 
-    def cmd_send_map(self):
-        import requests
+    def cmd_send_map(self, app):
         with open(self.mapfile, 'rb') as f:
             url = self.url('/load_map/')
-            resp = requests.post(url, files={'image': f})
+            resp = app.requests.post(url, files={'image': f})
             print resp
             print resp.text
 
-    def cmd_sync(self):
-        import requests
+    def cmd_sync(self, app):
         areas = self.fog.get_json_areas()
-        resp = requests.post(self.url('/reveal/'), json=areas)
+        resp = app.requests.post(self.url('/reveal/'), json=areas)
         print resp
         print resp.text
 
@@ -77,10 +75,9 @@ class DMScreen(Screen):
             self.fog.rotation = int(rot % 90) * 90
         self.fog.rotation += 90
 
-    def send_image(self, stream):
-        import requests
+    def send_image(self, app, stream):
         url = self.url('/show_image/')
-        resp = requests.post(url, files={'image': stream})
+        resp = app.requests.post(url, files={'image': stream})
         print resp
         print resp.text
 
