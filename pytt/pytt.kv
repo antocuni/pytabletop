@@ -110,13 +110,13 @@
                 height: '50dp'
                 on_release: root.cmd_load_map()
 
-            TextInput:
-                hint_text: "Custom notes"
+            # TextInput:
+            #     hint_text: "Custom notes"
 
-            Label:
-                text: ""
-                size_hint_y: None
-                height: '20dp'
+            # Label:
+            #     text: ""
+            #     size_hint_y: None
+            #     height: '20dp'
 
             ToolButton:
                 text: "Move"
@@ -137,11 +137,11 @@
                 height: '50dp'
                 on_release: root.cmd_sync(app)
 
-            Button:
-                text: "Rotate: +90"
-                size_hint_y: None
-                height: '50dp'
-                on_release: root.cmd_adjust_rotation()
+            # Button:
+            #     text: "Rotate: +90"
+            #     size_hint_y: None
+            #     height: '50dp'
+            #     on_release: root.cmd_adjust_rotation()
 
             Button:
                 text: "Send Map"
@@ -149,11 +149,11 @@
                 height: '50dp'
                 on_release: root.cmd_send_map(app)
 
-            Button:
-                text: "Quit"
-                size_hint_y: None
-                height: '50dp'
-                on_release: app.root.go_back()
+            # Button:
+            #     text: "Quit"
+            #     size_hint_y: None
+            #     height: '50dp'
+            #     on_release: app.root.go_back()
 
 
 <PlayerScreen>:
