@@ -35,7 +35,7 @@
 <ToolButton@ToggleButton>:
     tool: ""
     size_hint_y: None
-    height: 50
+    height: '50dp'
     state: "down" if app.tool == self.tool else "normal"
     on_release: app.tool = self.tool
 
@@ -50,7 +50,7 @@
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
-            height: 50
+            height: '50dp'
                 
             Button:
                 text: "Send"
@@ -71,7 +71,7 @@
         Button:
             size_hint: None, None
             pos_hint: {'right': 1, 'top': 1}
-            size: 50, 50
+            size: '50dp', '50dp'
             text: "Close"
             on_release: app.root.go_back()
 
@@ -90,24 +90,24 @@
             right: root.right
             orientation: 'vertical'
             size_hint_x: None
-            width: 100
+            width: '100dp'
 
             Label:
                 text: "Player App IP"
                 size_hint_y: None
-                height: 20
+                height: '20dp'
 
             TextInput:
                 text: root.server
                 on_text: root.server = self.text
                 size_hint_y: None
-                height: 30
+                height: '30dp'
                 multiline: False
 
             Button:
                 text: "Load Map"
                 size_hint_y: None
-                height: 50
+                height: '50dp'
                 on_release: root.cmd_load_map()
 
             TextInput:
@@ -116,7 +116,7 @@
             Label:
                 text: ""
                 size_hint_y: None
-                height: 20
+                height: '20dp'
 
             ToolButton:
                 text: "Move"
@@ -129,30 +129,30 @@
             Label:
                 text: ""
                 size_hint_y: None
-                height: 20
+                height: '20dp'
 
             Button:
                 text: "Sync"
                 size_hint_y: None
-                height: 50
+                height: '50dp'
                 on_release: root.cmd_sync(app)
 
             Button:
                 text: "Rotate: +90"
                 size_hint_y: None
-                height: 50
+                height: '50dp'
                 on_release: root.cmd_adjust_rotation()
 
             Button:
                 text: "Send Map"
                 size_hint_y: None
-                height: 50
+                height: '50dp'
                 on_release: root.cmd_send_map(app)
 
             Button:
                 text: "Quit"
                 size_hint_y: None
-                height: 50
+                height: '50dp'
                 on_release: app.root.go_back()
 
 
@@ -161,7 +161,7 @@
         orientation: 'vertical'
         Label:
             size_hint_y: None
-            height: 50
+            height: '50dp'
             text: "Map Viewer: %s" % app.IPAddress
 
         FogOfWar:
